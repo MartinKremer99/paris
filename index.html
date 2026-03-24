@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Paris — Avec Toi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c0f;
+    --surface: #161218;
+    --surface2: #1e1922;
+    --cream: #f2e8d9;
+    --cream-dim: #a09080;
+    --cream-faint: #4a4038;
+    --gold: #c8a46a;
+    --gold-dim: rgba(200, 164, 106, 0.25);
+    --gold-faint: rgba(200, 164, 106, 0.08);
+    --border: rgba(200, 164, 106, 0.18);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Raleway', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    overflow: hidden;
+    position: fixed;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    transform: translateX(30px);
+  }
+  .screen.active {
+    opacity: 1; pointer-events: all;
+    transform: translateX(0);
+  }
+  .screen.exit {
+    opacity: 0; transform: translateX(-30px);
+    pointer-events: none;
+  }
+
+  /* ── COVER ── */
+  #cover {
+    align-items: center; justify-content: center;
+    text-align: center;
+    background: var(--bg);
+    padding: 2rem;
+  }
+  .cover-ornament {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+  .cover-label {
+    font-family: var(--sans); font-size: 10px; font-weight: 400;
+    letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold);
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    margin-bottom: 1.2rem;
+  }
+  .cover-title {
+    font-family: var(--serif); font-size: clamp(72px, 22vw, 110px);
+    font-weight: 300; font-style: italic;
+    line-height: 0.9; color: var(--cream);
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+    margin-bottom: 1.4rem;
+  }
+  .cover-dates {
+    font-family: var(--serif); font-size: 16px; font-style: italic;
+    color: var(--cream-dim); letter-spacing: 0.08em;
+    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+    margin-bottom: 0.5rem;
+  }
+  .cover-sub {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--cream-faint);
+    opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
+    margin-bottom: 3.5rem;
+  }
+  .cover-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 0.5px solid var(--border); border-radius: 40px;
+    padding: 14px 32px; cursor: pointer;
+    font-family: var(--sans); font-size: 11px; font-weight: 400;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    background: transparent;
+    opacity: 0; animation: fadeUp 0.8s 1.6s forwards;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .cover-btn:active { background: var(--gold-faint); }
+  .cover-btn .arrow { font-size: 14px; }
+
+  /* ── DAY SCREENS ── */
+  .day-screen { background: var(--bg); }
+
+  .day-header {
+    padding: 3.5rem 1.8rem 1.6rem;
+    border-bottom: 0.5px solid var(--border);
+    flex-shrink: 0;
+  }
+  .day-back {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); cursor: pointer; margin-bottom: 1.8rem;
+    background: none; border: none; font-family: var(--sans);
+  }
+  .day-eyebrow {
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.6rem;
+  }
+  .day-title {
+    font-family: var(--serif); font-size: 38px; font-weight: 300;
+    font-style: italic; line-height: 1.15; color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+  .day-subtitle {
+    font-size: 12px; color: var(--cream-dim); letter-spacing: 0.06em;
+    font-family: var(--serif); font-style: italic;
+  }
+
+  .day-scroll {
+    flex: 1; overflow-y: auto; padding: 1.8rem 1.8rem 6rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .day-scroll::-webkit-scrollbar { display: none; }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-bottom: 2.4rem; }
+  .tl-label {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--cream-dim); margin-bottom: 1.2rem;
+  }
+  .tl-item {
+    display: grid; grid-template-columns: 52px 1fr;
+    gap: 0; position: relative; margin-bottom: 0;
+  }
+  .tl-item:not(:last-child)::after {
+    content: '';
+    position: absolute; left: 25px; top: 28px; bottom: -1px;
+    width: 0.5px; background: var(--border);
+  }
+  .tl-left { display: flex; flex-direction: column; align-items: center; padding-top: 2px; }
+  .tl-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 0.5px solid var(--gold); background: var(--bg);
+    flex-shrink: 0; margin-top: 4px;
+  }
+  .tl-time {
+    font-size: 10px; color: var(--gold); letter-spacing: 0.05em;
+    margin-top: 6px; white-space: nowrap;
+  }
+  .tl-right { padding: 0 0 2rem 0.8rem; }
+  .tl-event-title {
+    font-family: var(--serif); font-size: 19px; font-weight: 400;
+    color: var(--cream); margin-bottom: 0.3rem; line-height: 1.3;
+  }
+  .tl-event-desc {
+    font-size: 13px; color: var(--cream-dim); line-height: 1.7;
+    font-family: var(--serif); font-style: italic;
+  }
+  .tl-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); border: 0.5px solid var(--border);
+    padding: 3px 10px; border-radius: 20px;
+    font-family: var(--sans);
+  }
+  .tl-mystery {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 8px;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); border: 0.5px solid var(--border);
+    padding: 3px 10px; border-radius: 20px;
+    font-family: var(--sans); cursor: pointer;
+    background: var(--gold-faint); transition: background 0.2s;
+  }
+  .tl-mystery:active { background: var(--gold-dim); }
+
+  /* ── PACK SECTION ── */
+  .pack-section { margin-bottom: 2rem; }
+  .pack-label {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--cream-dim); margin-bottom: 0.8rem;
+  }
+  .pack-hint {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    color: var(--cream-dim); line-height: 1.7; margin-bottom: 1rem;
+  }
+  .pack-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    font-size: 11px; letter-spacing: 0.06em;
+    border: 0.5px solid var(--border); border-radius: 20px;
+    padding: 5px 13px; color: var(--cream-dim);
+    font-family: var(--sans); background: var(--gold-faint);
+  }
+  .pill.key {
+    border-color: rgba(200, 164, 106, 0.5);
+    color: var(--cream); background: rgba(200, 164, 106, 0.12);
+  }
+
+  /* ── CHOICE CARDS ── */
+  .choices-section { margin-bottom: 2rem; }
+  .choices-intro {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    color: var(--cream-dim); line-height: 1.7; margin-bottom: 1.2rem;
+  }
+  .choice-cards { display: flex; flex-direction: column; gap: 10px; }
+  .choice-card {
+    border: 0.5px solid var(--border); border-radius: 16px;
+    padding: 1.3rem 1.4rem; cursor: pointer;
+    background: var(--gold-faint); transition: border-color 0.3s, background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .choice-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(200,164,106,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .choice-card.chosen {
+    border-color: var(--gold); background: rgba(200, 164, 106, 0.12);
+  }
+  .choice-card.unchosen { opacity: 0.35; pointer-events: none; }
+  .card-num {
+    font-size: 10px; letter-spacing: 0.25em; color: var(--gold);
+    margin-bottom: 0.7rem; font-family: var(--sans);
+  }
+  .card-clue {
+    font-family: var(--serif); font-style: italic; font-size: 16px;
+    line-height: 1.7; color: var(--cream); margin-bottom: 0.6rem;
+  }
+  .card-mood { font-size: 11px; color: var(--cream-dim); letter-spacing: 0.08em; }
+  .card-chosen-badge {
+    display: none; position: absolute; top: 1rem; right: 1rem;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    background: var(--gold); color: var(--bg); padding: 3px 10px;
+    border-radius: 20px; font-family: var(--sans); font-weight: 500;
+  }
+  .choice-card.chosen .card-chosen-badge { display: block; }
+  .choice-feedback {
+    font-family: var(--serif); font-style: italic;
+    font-size: 14px; color: var(--gold); min-height: 24px;
+    text-align: center; margin-top: 1rem; opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .choice-feedback.visible { opacity: 1; }
+
+  /* ── NAV DOTS ── */
+  .nav-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 1rem 1.8rem 2rem;
+    background: linear-gradient(to top, var(--bg) 60%, transparent);
+    display: none; justify-content: space-between; align-items: center;
+    pointer-events: none;
+  }
+  .nav-bar.visible { display: flex; pointer-events: all; }
+  .nav-dots { display: flex; gap: 6px; }
+  .nav-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--cream-faint); transition: background 0.3s, width 0.3s;
+  }
+  .nav-dot.active { background: var(--gold); width: 16px; border-radius: 3px; }
+  .nav-next {
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); cursor: pointer;
+    background: none; border: none; display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── HOTEL CARD ── */
+  .hotel-card {
+    border: 0.5px solid var(--border); border-radius: 16px;
+    padding: 1.2rem 1.4rem; margin-bottom: 2rem;
+    background: var(--gold-faint);
+  }
+  .hotel-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .hotel-name { font-family: var(--serif); font-size: 18px; color: var(--cream); margin-bottom: 0.3rem; }
+  .hotel-address { font-size: 12px; color: var(--cream-dim); font-style: italic; font-family: var(--serif); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 40px; height: 0.5px;
+    background: var(--border); margin: 2rem 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DAY NAV (prev/next swipe area) ── */
+  .swipe-hint {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--cream-faint); text-align: center; margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ COVER ══════════ -->
+<div class="screen active" id="cover">
+  <div class="cover-ornament"></div>
+  <div class="cover-label">April 1 – 4, 2025</div>
+  <div class="cover-title">Paris</div>
+  <div class="cover-dates">Four days, just the two of us</div>
+  <div class="cover-sub">A little trip, carefully made for you</div>
+  <button class="cover-btn" onclick="goToDay(0)">
+    Open your journey <span class="arrow">→</span>
+  </button>
+</div>
+
+<!-- ══════════ DAY 1 ══════════ -->
+<div class="screen day-screen" id="day-0">
+  <div class="day-header">
+    <button class="day-back" onclick="goBack()">← Back</button>
+    <div class="day-eyebrow">Day 1 · Tuesday 1 April</div>
+    <div class="day-title">Arrival &<br>first steps</div>
+    <div class="day-subtitle">The city is already waiting for you</div>
+  </div>
+  <div class="day-scroll">
+
+    <div class="hotel-card">
+      <div class="hotel-label">Home for four nights</div>
+      <div class="hotel-name">Holiday Inn Paris Opéra</div>
+      <div class="hotel-address">Grand Boulevards, Paris 9ème</div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-label">Today</div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">18:00</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">We arrive</div>
+          <div class="tl-event-desc">Check in, drop the bags, breathe. You made it to Paris.</div>
+          <span class="tl-tag">Hotel check-in</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">Evening</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">The city, unplanned</div>
+          <div class="tl-event-desc">No agenda tonight. Just us, the streets, wherever we end up. The best evenings in Paris are never planned.</div>
+          <span class="tl-tag">Free exploration</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pack-section">
+      <div class="pack-label">What to wear today</div>
+      <div class="pack-hint">It's a travel day, then cobblestones. Comfort wins. Save the good shoes for tomorrow.</div>
+      <div class="pack-pills">
+        <span class="pill key">comfortable shoes</span>
+        <span class="pill key">a light jacket</span>
+        <span class="pill">your everyday bag</span>
+        <span class="pill">layers</span>
+        <span class="pill">something cosy for the room</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ DAY 2 ══════════ -->
+<div class="screen day-screen" id="day-1">
+  <div class="day-header">
+    <button class="day-back" onclick="prevDay()">← Day 1</button>
+    <div class="day-eyebrow">Day 2 · Wednesday 2 April</div>
+    <div class="day-title">The Louvre &<br>a secret evening</div>
+    <div class="day-subtitle">Art, wonder, and a surprise after dark</div>
+  </div>
+  <div class="day-scroll">
+
+    <div class="timeline">
+      <div class="tl-label">Today</div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">14:00</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">The Louvre</div>
+          <div class="tl-event-desc">The world's greatest museum. We won't see it all — nobody does — but we'll find the rooms that feel like ours.</div>
+          <span class="tl-tag">Booked ✓</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">Evening</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">Dinner — you choose</div>
+          <div class="tl-event-desc">I have something in mind, but the decision is yours. Three very different evenings. One choice.</div>
+          <span class="tl-mystery" onclick="showSection('choices-d2')">✦ Make your choice</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="choices-d2" style="display:none;">
+      <div class="divider"></div>
+      <div class="choices-section">
+        <div class="pack-label">Tonight's dinner</div>
+        <div class="choices-intro">Three doors. Read each one slowly. Pick the evening that calls to you — I'll handle the rest.</div>
+        <div class="choice-cards" id="cards-d2">
+          <div class="choice-card" onclick="pickCard('d2', 0, 'A rooftop view it is. I\'ll make sure we\'re dressed for it.')">
+            <div class="card-num">No. 01</div>
+            <div class="card-clue">"The city stretches below you like a secret someone finally told. The wine arrives before you ask for it. You won't want the night to end."</div>
+            <div class="card-mood">elevation · stillness · dress to feel wonderful</div>
+            <span class="card-chosen-badge">chosen</span>
+          </div>
+          <div class="choice-card" onclick="pickCard('d2', 1, 'A timeless evening then. I had a feeling.')">
+            <div class="card-num">No. 02</div>
+            <div class="card-clue">"Forty years on the same corner, the same linen napkins, the same waiter who remembers everything. The kind of meal you'll tell people about for years."</div>
+            <div class="card-mood">tradition · warmth · unhurried</div>
+            <span class="card-chosen-badge">chosen</span>
+          </div>
+          <div class="choice-card" onclick="pickCard('d2', 2, 'The adventurous one. I love that about you.')">
+            <div class="card-num">No. 03</div>
+            <div class="card-clue">"Every plate surprises you. The chef's handwriting is all over it. Small portions, enormous feelings. You'll want to order everything twice."</div>
+            <div class="card-mood">discovery · creativity · conversation-starter</div>
+            <span class="card-chosen-badge">chosen</span>
+          </div>
+        </div>
+        <div class="choice-feedback" id="feedback-d2"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pack-section">
+      <div class="pack-label">What to wear today</div>
+      <div class="pack-hint">Museums are cool even in April. Then the evening has a certain weight to it — pack something you'd choose for a memory.</div>
+      <div class="pack-pills">
+        <span class="pill key">comfortable shoes (Louvre floors)</span>
+        <span class="pill key">your favourite evening outfit</span>
+        <span class="pill">a scarf for indoors</span>
+        <span class="pill">small evening bag</span>
+        <span class="pill">a little perfume</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ DAY 3 ══════════ -->
+<div class="screen day-screen" id="day-2">
+  <div class="day-header">
+    <button class="day-back" onclick="prevDay()">← Day 2</button>
+    <div class="day-eyebrow">Day 3 · Thursday 3 April</div>
+    <div class="day-title">Light, art &<br>a long dinner</div>
+    <div class="day-subtitle">The most full day — the best one</div>
+  </div>
+  <div class="day-scroll">
+
+    <div class="timeline">
+      <div class="tl-label">Today</div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">11:30</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">Atelier des Lumières</div>
+          <div class="tl-event-desc">Walk inside paintings. The whole building becomes the art — light and music fill every wall, floor, ceiling. It's impossible not to feel something.</div>
+          <span class="tl-tag">Booked ✓</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">Afternoon</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">The afternoon is yours</div>
+          <div class="tl-event-desc">Coffee, wandering, maybe a window full of things we can't afford. No plans — just following whatever catches your eye.</div>
+          <span class="tl-tag">Free time</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">20:00</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">De Vie Restaurant</div>
+          <div class="tl-event-desc">Our table is booked. The kind of dinner Paris was made for — unhurried, candlelit, with nowhere else to be.</div>
+          <span class="tl-tag">Booked ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pack-section">
+      <div class="pack-label">What to wear today</div>
+      <div class="pack-hint">The morning is immersive art — wear what you'll want to look good in anyway, because the light in there is beautiful. Tonight is dinner-worthy.</div>
+      <div class="pack-pills">
+        <span class="pill key">something beautiful for dinner</span>
+        <span class="pill key">layers for the morning</span>
+        <span class="pill">flat shoes or low heels</span>
+        <span class="pill">a small bag that works day to night</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ DAY 4 ══════════ -->
+<div class="screen day-screen" id="day-3">
+  <div class="day-header">
+    <button class="day-back" onclick="prevDay()">← Day 3</button>
+    <div class="day-eyebrow">Day 4 · Friday 4 April</div>
+    <div class="day-title">Last morning<br>in Paris</div>
+    <div class="day-subtitle">Slow coffee, one last croissant, then home</div>
+  </div>
+  <div class="day-scroll">
+
+    <div class="timeline">
+      <div class="tl-label">Today</div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">Morning</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">No alarm, no rush</div>
+          <div class="tl-event-desc">Paris is most beautiful in the morning before it wakes up. Breakfast, a slow walk, take our time.</div>
+          <span class="tl-tag">Free</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot"></div>
+          <div class="tl-time">18:00</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-event-title">We leave</div>
+          <div class="tl-event-desc">The city will still be here. So will we. But now we go home — with better stories than when we arrived.</div>
+          <span class="tl-tag">Departure</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pack-section">
+      <div class="pack-label">Last day essentials</div>
+      <div class="pack-hint">Pack light, carry everything that matters. Leave some space in your bag — Paris has a way of filling it.</div>
+      <div class="pack-pills">
+        <span class="pill key">comfortable travel outfit</span>
+        <span class="pill">sunglasses (fingers crossed)</span>
+        <span class="pill">something to write in</span>
+        <span class="pill">your packed bags</span>
+      </div>
+    </div>
+
+    <div style="text-align: center; padding: 1.5rem 0 0.5rem;">
+      <div style="width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); margin: 0 auto 1.2rem;"></div>
+      <div style="font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--cream-dim); line-height: 1.6;">
+        Thank you for every moment.<br>Every single one.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ NAV BAR ══════════ -->
+<div class="nav-bar" id="nav-bar">
+  <div class="nav-dots">
+    <div class="nav-dot active" id="dot-0"></div>
+    <div class="nav-dot" id="dot-1"></div>
+    <div class="nav-dot" id="dot-2"></div>
+    <div class="nav-dot" id="dot-3"></div>
+  </div>
+  <button class="nav-next" id="nav-next-btn" onclick="nextDay()">Next day →</button>
+</div>
+
+<script>
+  var currentDay = -1;
+  var totalDays = 4;
+
+  function goToDay(i) {
+    var prev = currentDay;
+    currentDay = i;
+
+    if (prev === -1) {
+      document.getElementById('cover').classList.remove('active');
+      document.getElementById('cover').classList.add('exit');
+    } else {
+      var prevEl = document.getElementById('day-' + prev);
+      prevEl.classList.remove('active');
+      prevEl.classList.add('exit');
+      setTimeout(function() { prevEl.classList.remove('exit'); }, 600);
+    }
+
+    var cur = document.getElementById('day-' + i);
+    cur.style.transform = 'translateX(30px)';
+    cur.classList.add('active');
+    updateNav();
+  }
+
+  function prevDay() {
+    if (currentDay === 0) {
+      goBack(); return;
+    }
+    goToDay(currentDay - 1);
+  }
+
+  function nextDay() {
+    if (currentDay < totalDays - 1) {
+      goToDay(currentDay + 1);
+    }
+  }
+
+  function goBack() {
+    var prevEl = document.getElementById('day-' + currentDay);
+    prevEl.classList.remove('active');
+    prevEl.classList.add('exit');
+    setTimeout(function() { prevEl.classList.remove('exit'); }, 600);
+
+    var cover = document.getElementById('cover');
+    cover.style.transform = 'translateX(-30px)';
+    cover.classList.remove('exit');
+    cover.classList.add('active');
+    cover.style.transform = '';
+
+    document.getElementById('nav-bar').classList.remove('visible');
+    currentDay = -1;
+  }
+
+  function updateNav() {
+    var bar = document.getElementById('nav-bar');
+    bar.classList.add('visible');
+    for (var i = 0; i < totalDays; i++) {
+      document.getElementById('dot-' + i).classList.toggle('active', i === currentDay);
+    }
+    var btn = document.getElementById('nav-next-btn');
+    if (currentDay === totalDays - 1) {
+      btn.style.visibility = 'hidden';
+    } else {
+      btn.style.visibility = 'visible';
+    }
+  }
+
+  function showSection(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  var cardFeedback = {
+    'd2': ["A rooftop view it is. I'll make sure we're dressed for it.", "A timeless evening then. I had a feeling.", "The adventurous one. I love that about you."]
+  };
+
+  function pickCard(day, idx, msg) {
+    var container = document.getElementById('cards-' + day);
+    var cards = container.querySelectorAll('.choice-card');
+    cards.forEach(function(c, i) {
+      c.classList.remove('chosen', 'unchosen');
+      if (i === idx) c.classList.add('chosen');
+      else c.classList.add('unchosen');
+    });
+    var feedback = document.getElementById('feedback-' + day);
+    feedback.textContent = msg;
+    feedback.classList.add('visible');
+  }
+
+  // Swipe navigation
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (currentDay === -1) return;
+    if (Math.abs(dx) < 60) return;
+    if (dx < 0) nextDay();
+    else prevDay();
+  }, { passive: true });
+</script>
+</body>
+</html>

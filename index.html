@@ -1,599 +1,632 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Paris — Avec Toi</title>
+<title>Paris — Für dich</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0e0c0f;
-    --surface: #161218;
-    --surface2: #1e1922;
-    --cream: #f2e8d9;
-    --cream-dim: #a09080;
-    --cream-faint: #4a4038;
-    --gold: #c8a46a;
-    --gold-dim: rgba(200, 164, 106, 0.25);
-    --gold-faint: rgba(200, 164, 106, 0.08);
-    --border: rgba(200, 164, 106, 0.18);
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --sans: 'Raleway', system-ui, sans-serif;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    width: 100%; height: 100%;
-    background: var(--bg);
-    color: var(--cream);
-    font-family: var(--sans);
-    overflow: hidden;
-    position: fixed;
-  }
-
-  /* ── SCREENS ── */
-  .screen {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.55s ease, transform 0.55s ease;
-    transform: translateX(30px);
-  }
-  .screen.active {
-    opacity: 1; pointer-events: all;
-    transform: translateX(0);
-  }
-  .screen.exit {
-    opacity: 0; transform: translateX(-30px);
-    pointer-events: none;
-  }
-
-  /* ── COVER ── */
-  #cover {
-    align-items: center; justify-content: center;
-    text-align: center;
-    background: var(--bg);
-    padding: 2rem;
-  }
-  .cover-ornament {
-    width: 1px; height: 60px;
-    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    margin: 0 auto 2rem;
-    opacity: 0;
-    animation: fadeUp 1s 0.3s forwards;
-  }
-  .cover-label {
-    font-family: var(--sans); font-size: 10px; font-weight: 400;
-    letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold);
-    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
-    margin-bottom: 1.2rem;
-  }
-  .cover-title {
-    font-family: var(--serif); font-size: clamp(72px, 22vw, 110px);
-    font-weight: 300; font-style: italic;
-    line-height: 0.9; color: var(--cream);
-    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
-    margin-bottom: 1.4rem;
-  }
-  .cover-dates {
-    font-family: var(--serif); font-size: 16px; font-style: italic;
-    color: var(--cream-dim); letter-spacing: 0.08em;
-    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
-    margin-bottom: 0.5rem;
-  }
-  .cover-sub {
-    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--cream-faint);
-    opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
-    margin-bottom: 3.5rem;
-  }
-  .cover-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    border: 0.5px solid var(--border); border-radius: 40px;
-    padding: 14px 32px; cursor: pointer;
-    font-family: var(--sans); font-size: 11px; font-weight: 400;
-    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
-    background: transparent;
-    opacity: 0; animation: fadeUp 0.8s 1.6s forwards;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .cover-btn:active { background: var(--gold-faint); }
-  .cover-btn .arrow { font-size: 14px; }
-
-  /* ── DAY SCREENS ── */
-  .day-screen { background: var(--bg); }
-
-  .day-header {
-    padding: 3.5rem 1.8rem 1.6rem;
-    border-bottom: 0.5px solid var(--border);
-    flex-shrink: 0;
-  }
-  .day-back {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); cursor: pointer; margin-bottom: 1.8rem;
-    background: none; border: none; font-family: var(--sans);
-  }
-  .day-eyebrow {
-    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 0.6rem;
-  }
-  .day-title {
-    font-family: var(--serif); font-size: 38px; font-weight: 300;
-    font-style: italic; line-height: 1.15; color: var(--cream);
-    margin-bottom: 0.4rem;
-  }
-  .day-subtitle {
-    font-size: 12px; color: var(--cream-dim); letter-spacing: 0.06em;
-    font-family: var(--serif); font-style: italic;
-  }
-
-  .day-scroll {
-    flex: 1; overflow-y: auto; padding: 1.8rem 1.8rem 6rem;
-    -webkit-overflow-scrolling: touch;
-  }
-  .day-scroll::-webkit-scrollbar { display: none; }
-
-  /* ── TIMELINE ── */
-  .timeline { margin-bottom: 2.4rem; }
-  .tl-label {
-    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--cream-dim); margin-bottom: 1.2rem;
-  }
-  .tl-item {
-    display: grid; grid-template-columns: 52px 1fr;
-    gap: 0; position: relative; margin-bottom: 0;
-  }
-  .tl-item:not(:last-child)::after {
-    content: '';
-    position: absolute; left: 25px; top: 28px; bottom: -1px;
-    width: 0.5px; background: var(--border);
-  }
-  .tl-left { display: flex; flex-direction: column; align-items: center; padding-top: 2px; }
-  .tl-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    border: 0.5px solid var(--gold); background: var(--bg);
-    flex-shrink: 0; margin-top: 4px;
-  }
-  .tl-time {
-    font-size: 10px; color: var(--gold); letter-spacing: 0.05em;
-    margin-top: 6px; white-space: nowrap;
-  }
-  .tl-right { padding: 0 0 2rem 0.8rem; }
-  .tl-event-title {
-    font-family: var(--serif); font-size: 19px; font-weight: 400;
-    color: var(--cream); margin-bottom: 0.3rem; line-height: 1.3;
-  }
-  .tl-event-desc {
-    font-size: 13px; color: var(--cream-dim); line-height: 1.7;
-    font-family: var(--serif); font-style: italic;
-  }
-  .tl-tag {
-    display: inline-block; margin-top: 8px;
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--gold); border: 0.5px solid var(--border);
-    padding: 3px 10px; border-radius: 20px;
-    font-family: var(--sans);
-  }
-  .tl-mystery {
-    display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 8px;
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--gold); border: 0.5px solid var(--border);
-    padding: 3px 10px; border-radius: 20px;
-    font-family: var(--sans); cursor: pointer;
-    background: var(--gold-faint); transition: background 0.2s;
-  }
-  .tl-mystery:active { background: var(--gold-dim); }
-
-  /* ── PACK SECTION ── */
-  .pack-section { margin-bottom: 2rem; }
-  .pack-label {
-    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--cream-dim); margin-bottom: 0.8rem;
-  }
-  .pack-hint {
-    font-family: var(--serif); font-style: italic; font-size: 15px;
-    color: var(--cream-dim); line-height: 1.7; margin-bottom: 1rem;
-  }
-  .pack-pills { display: flex; flex-wrap: wrap; gap: 7px; }
-  .pill {
-    font-size: 11px; letter-spacing: 0.06em;
-    border: 0.5px solid var(--border); border-radius: 20px;
-    padding: 5px 13px; color: var(--cream-dim);
-    font-family: var(--sans); background: var(--gold-faint);
-  }
-  .pill.key {
-    border-color: rgba(200, 164, 106, 0.5);
-    color: var(--cream); background: rgba(200, 164, 106, 0.12);
-  }
-
-  /* ── CHOICE CARDS ── */
-  .choices-section { margin-bottom: 2rem; }
-  .choices-intro {
-    font-family: var(--serif); font-style: italic; font-size: 15px;
-    color: var(--cream-dim); line-height: 1.7; margin-bottom: 1.2rem;
-  }
-  .choice-cards { display: flex; flex-direction: column; gap: 10px; }
-  .choice-card {
-    border: 0.5px solid var(--border); border-radius: 16px;
-    padding: 1.3rem 1.4rem; cursor: pointer;
-    background: var(--gold-faint); transition: border-color 0.3s, background 0.3s;
-    position: relative; overflow: hidden;
-  }
-  .choice-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(200,164,106,0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .choice-card.chosen {
-    border-color: var(--gold); background: rgba(200, 164, 106, 0.12);
-  }
-  .choice-card.unchosen { opacity: 0.35; pointer-events: none; }
-  .card-num {
-    font-size: 10px; letter-spacing: 0.25em; color: var(--gold);
-    margin-bottom: 0.7rem; font-family: var(--sans);
-  }
-  .card-clue {
-    font-family: var(--serif); font-style: italic; font-size: 16px;
-    line-height: 1.7; color: var(--cream); margin-bottom: 0.6rem;
-  }
-  .card-mood { font-size: 11px; color: var(--cream-dim); letter-spacing: 0.08em; }
-  .card-chosen-badge {
-    display: none; position: absolute; top: 1rem; right: 1rem;
-    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-    background: var(--gold); color: var(--bg); padding: 3px 10px;
-    border-radius: 20px; font-family: var(--sans); font-weight: 500;
-  }
-  .choice-card.chosen .card-chosen-badge { display: block; }
-  .choice-feedback {
-    font-family: var(--serif); font-style: italic;
-    font-size: 14px; color: var(--gold); min-height: 24px;
-    text-align: center; margin-top: 1rem; opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .choice-feedback.visible { opacity: 1; }
-
-  /* ── NAV DOTS ── */
-  .nav-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    padding: 1rem 1.8rem 2rem;
-    background: linear-gradient(to top, var(--bg) 60%, transparent);
-    display: none; justify-content: space-between; align-items: center;
-    pointer-events: none;
-  }
-  .nav-bar.visible { display: flex; pointer-events: all; }
-  .nav-dots { display: flex; gap: 6px; }
-  .nav-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--cream-faint); transition: background 0.3s, width 0.3s;
-  }
-  .nav-dot.active { background: var(--gold); width: 16px; border-radius: 3px; }
-  .nav-next {
-    font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold); cursor: pointer;
-    background: none; border: none; display: flex; align-items: center; gap: 6px;
-  }
-
-  /* ── HOTEL CARD ── */
-  .hotel-card {
-    border: 0.5px solid var(--border); border-radius: 16px;
-    padding: 1.2rem 1.4rem; margin-bottom: 2rem;
-    background: var(--gold-faint);
-  }
-  .hotel-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-  .hotel-name { font-family: var(--serif); font-size: 18px; color: var(--cream); margin-bottom: 0.3rem; }
-  .hotel-address { font-size: 12px; color: var(--cream-dim); font-style: italic; font-family: var(--serif); }
-
-  /* ── DIVIDER ── */
-  .divider {
-    width: 40px; height: 0.5px;
-    background: var(--border); margin: 2rem 0;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── DAY NAV (prev/next swipe area) ── */
-  .swipe-hint {
-    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--cream-faint); text-align: center; margin-top: 0.5rem;
-  }
+:root{--bg:#0e0c0f;--cream:#f2e8d9;--cream-dim:#a09080;--cream-faint:#4a4038;--gold:#c8a46a;--gold-dim:rgba(200,164,106,0.25);--gold-faint:rgba(200,164,106,0.08);--border:rgba(200,164,106,0.18);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Raleway',system-ui,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-family:var(--sans);overflow:hidden;position:fixed;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:translateX(30px);}
+.screen.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.screen.exit{opacity:0;transform:translateX(-30px);pointer-events:none;}
+#cover{align-items:center;justify-content:center;text-align:center;background:var(--bg);padding:2rem;}
+.cover-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);margin:0 auto 2rem;opacity:0;animation:fadeUp 1s .3s forwards;}
+.cover-label{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .8s .6s forwards;margin-bottom:1.2rem;}
+.cover-title{font-family:var(--serif);font-size:clamp(72px,22vw,110px);font-weight:300;font-style:italic;line-height:.9;color:var(--cream);opacity:0;animation:fadeUp .9s .8s forwards;margin-bottom:1.4rem;}
+.cover-dates{font-family:var(--serif);font-size:16px;font-style:italic;color:var(--cream-dim);letter-spacing:.08em;opacity:0;animation:fadeUp .8s 1.1s forwards;margin-bottom:.4rem;}
+.cover-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);opacity:0;animation:fadeUp .8s 1.3s forwards;margin-bottom:3.5rem;}
+.cover-btn{display:inline-flex;align-items:center;gap:10px;border:.5px solid var(--border);border-radius:40px;padding:14px 32px;cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);background:transparent;opacity:0;animation:fadeUp .8s 1.6s forwards;transition:background .3s;}
+.cover-btn:active{background:var(--gold-faint);}
+.day-header{padding:3.2rem 1.8rem 1.4rem;border-bottom:.5px solid var(--border);flex-shrink:0;}
+.day-back{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);cursor:pointer;margin-bottom:1.6rem;background:none;border:none;font-family:var(--sans);}
+.day-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.day-title{font-family:var(--serif);font-size:36px;font-weight:300;font-style:italic;line-height:1.15;color:var(--cream);margin-bottom:.35rem;}
+.day-subtitle{font-size:12px;color:var(--cream-dim);letter-spacing:.06em;font-family:var(--serif);font-style:italic;}
+.day-scroll{flex:1;overflow-y:auto;padding:1.8rem 1.8rem 7rem 1.8rem;-webkit-overflow-scrolling:touch;}
+.day-scroll::-webkit-scrollbar{display:none;}
+.tl-section-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.2rem;}
+.tl-item{display:grid;grid-template-columns:52px 1fr;position:relative;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:25px;top:28px;bottom:-1px;width:.5px;background:var(--border);}
+.tl-left{display:flex;flex-direction:column;align-items:center;padding-top:2px;}
+.tl-dot{width:8px;height:8px;border-radius:50%;border:.5px solid var(--gold);background:var(--bg);flex-shrink:0;margin-top:5px;}
+.tl-dot.soft{border-color:var(--cream-faint);background:var(--cream-faint);}
+.tl-time{font-size:10px;color:var(--gold);letter-spacing:.04em;margin-top:5px;white-space:nowrap;}
+.tl-right{padding:0 0 1.8rem .8rem;}
+.tl-name{font-family:var(--serif);font-size:19px;font-weight:400;color:var(--cream);margin-bottom:.3rem;line-height:1.3;}
+.tl-desc{font-size:13px;color:var(--cream-dim);line-height:1.75;font-family:var(--serif);font-style:italic;}
+.tl-tag{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:.5px solid var(--border);padding:3px 10px;border-radius:20px;font-family:var(--sans);}
+.tl-tag.soft{color:var(--cream-faint);border-color:rgba(74,64,56,.4);}
+.tl-reveal{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:.5px solid var(--border);padding:3px 10px;border-radius:20px;font-family:var(--sans);cursor:pointer;background:var(--gold-faint);transition:background .2s;}
+.tl-reveal:active{background:var(--gold-dim);}
+.divider{width:40px;height:.5px;background:var(--border);margin:1.6rem 0;}
+.pack-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:.7rem;}
+.pack-hint{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-dim);line-height:1.7;margin-bottom:.9rem;}
+.pack-pills{display:flex;flex-wrap:wrap;gap:7px;}
+.pill{font-size:11px;letter-spacing:.06em;border:.5px solid var(--border);border-radius:20px;padding:5px 13px;color:var(--cream-dim);font-family:var(--sans);background:var(--gold-faint);}
+.pill.key{border-color:rgba(200,164,106,.5);color:var(--cream);background:rgba(200,164,106,.12);}
+.choices-intro{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-dim);line-height:1.7;margin-bottom:1.1rem;}
+.choice-cards{display:flex;flex-direction:column;gap:10px;}
+.c-card{border:.5px solid var(--border);border-radius:16px;padding:1.3rem 1.4rem;cursor:pointer;background:var(--gold-faint);transition:border-color .3s,background .3s,opacity .3s;position:relative;overflow:hidden;}
+.c-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,164,106,.05) 0%,transparent 60%);pointer-events:none;}
+.c-card.chosen{border-color:var(--gold);background:rgba(200,164,106,.12);}
+.c-card.unchosen{opacity:.3;pointer-events:none;}
+.c-num{font-size:10px;letter-spacing:.25em;color:var(--gold);margin-bottom:.6rem;font-family:var(--sans);}
+.c-clue{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.7;color:var(--cream);margin-bottom:.5rem;}
+.c-mood{font-size:11px;color:var(--cream-dim);letter-spacing:.07em;}
+.c-badge{display:none;position:absolute;top:.9rem;right:.9rem;font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--bg);padding:3px 10px;border-radius:20px;font-family:var(--sans);font-weight:500;}
+.c-card.chosen .c-badge,.c-card.auto-chosen .c-badge{display:block;}
+.c-feedback{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);min-height:22px;text-align:center;margin-top:.9rem;opacity:0;transition:opacity .4s;}
+.c-feedback.show{opacity:1;}
+.note-box{border:.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;background:var(--gold-faint);font-family:var(--serif);font-style:italic;font-size:14px;color:var(--cream-dim);line-height:1.7;margin-top:.8rem;}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;padding:1rem 1.8rem 2rem;background:linear-gradient(to top,var(--bg) 60%,transparent);display:none;justify-content:space-between;align-items:center;}
+.nav-bar.show{display:flex;}
+.nav-dots{display:flex;gap:6px;}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--cream-faint);transition:background .3s,width .3s;}
+.nav-dot.active{background:var(--gold);width:16px;border-radius:3px;}
+.nav-next{font-family:var(--sans);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:6px;}
+.closing{text-align:center;padding:2rem 0 1rem;}
+.closing-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto 1.2rem;}
+.closing-text{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--cream-dim);line-height:1.7;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- ══════════ COVER ══════════ -->
 <div class="screen active" id="cover">
-  <div class="cover-ornament"></div>
-  <div class="cover-label">April 1 – 4, 2025</div>
+  <div class="cover-line"></div>
+  <div class="cover-label">1. – 4. April 2026</div>
   <div class="cover-title">Paris</div>
-  <div class="cover-dates">Four days, just the two of us</div>
-  <div class="cover-sub">A little trip, carefully made for you</div>
-  <button class="cover-btn" onclick="goToDay(0)">
-    Open your journey <span class="arrow">→</span>
-  </button>
+  <div class="cover-dates">Vier Tage. Drei Nächte. Nur wir zwei.</div>
+  <div class="cover-sub">Eine Reise, die ich nur für dich geplant habe</div>
+  <button class="cover-btn" onclick="goToDay(0)">Deine Reise öffnen →</button>
 </div>
 
-<!-- ══════════ DAY 1 ══════════ -->
-<div class="screen day-screen" id="day-0">
+<!-- TAG 1 -->
+<div class="screen" id="day-0">
   <div class="day-header">
-    <button class="day-back" onclick="goBack()">← Back</button>
-    <div class="day-eyebrow">Day 1 · Tuesday 1 April</div>
-    <div class="day-title">Arrival &<br>first steps</div>
-    <div class="day-subtitle">The city is already waiting for you</div>
+    <button class="day-back" onclick="goBack()">← Zurück</button>
+    <div class="day-eyebrow">Tag 1 · Mittwoch, 1. April</div>
+    <div class="day-title">Die Reise<br>beginnt</div>
+    <div class="day-subtitle">Noch nicht da — aber schon unterwegs</div>
   </div>
   <div class="day-scroll">
+    <div class="tl-section-label">Heute</div>
 
-    <div class="hotel-card">
-      <div class="hotel-label">Home for four nights</div>
-      <div class="hotel-name">Holiday Inn Paris Opéra</div>
-      <div class="hotel-address">Grand Boulevards, Paris 9ème</div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">16:10</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Abfahrt</div>
+        <div class="tl-desc">Der Zug fährt ab. Ich habe Snacks eingepackt — mach es dir bequem und schau aus dem Fenster. Paris kommt zu uns.</div>
+        <span class="tl-tag">Zug · Luxemburg</span>
+      </div>
     </div>
 
-    <div class="timeline">
-      <div class="tl-label">Today</div>
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">18:00</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">We arrive</div>
-          <div class="tl-event-desc">Check in, drop the bags, breathe. You made it to Paris.</div>
-          <span class="tl-tag">Hotel check-in</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">18:20</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ankunft</div>
+        <div class="tl-desc">Der Lärm, die Luft, das Licht — es fühlt sich sofort anders an. Wir sind da.</div>
+        <span class="tl-tag">Paris Est</span>
       </div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">Evening</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">The city, unplanned</div>
-          <div class="tl-event-desc">No agenda tonight. Just us, the streets, wherever we end up. The best evenings in Paris are never planned.</div>
-          <span class="tl-tag">Free exploration</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ins Zimmer</div>
+        <div class="tl-desc">Taschen abstellen, durchatmen, ankommen.</div>
+        <span class="tl-tag soft">Check-in</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Abend</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der Laden, den alle kennen</div>
+        <div class="tl-desc">Ein kleiner Ort um die Ecke, der Burger macht, die sich in Paris herumgesprochen haben. Wir holen sie ab und essen im Zimmer — erster Abend, kein Stress, bestes Essen.</div>
+        <span class="tl-tag">Abendessen · zum Mitnehmen</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Gute Nacht</div>
+        <div class="tl-desc">Morgen beginnt Paris wirklich.</div>
+        <span class="tl-tag soft">Nacht</span>
       </div>
     </div>
 
     <div class="divider"></div>
-
-    <div class="pack-section">
-      <div class="pack-label">What to wear today</div>
-      <div class="pack-hint">It's a travel day, then cobblestones. Comfort wins. Save the good shoes for tomorrow.</div>
-      <div class="pack-pills">
-        <span class="pill key">comfortable shoes</span>
-        <span class="pill key">a light jacket</span>
-        <span class="pill">your everyday bag</span>
-        <span class="pill">layers</span>
-        <span class="pill">something cosy for the room</span>
-      </div>
+    <div class="pack-label">Was du heute brauchst</div>
+    <div class="pack-hint">Reisetag — Komfort gewinnt. Heb die schönen Sachen für morgen auf.</div>
+    <div class="pack-pills">
+      <span class="pill key">bequeme Schuhe</span>
+      <span class="pill key">leichte Jacke</span>
+      <span class="pill">deine Alltagstasche</span>
+      <span class="pill">etwas Gemütliches fürs Zimmer</span>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════ DAY 2 ══════════ -->
-<div class="screen day-screen" id="day-1">
+<!-- TAG 2 -->
+<div class="screen" id="day-1">
   <div class="day-header">
-    <button class="day-back" onclick="prevDay()">← Day 1</button>
-    <div class="day-eyebrow">Day 2 · Wednesday 2 April</div>
-    <div class="day-title">The Louvre &<br>a secret evening</div>
-    <div class="day-subtitle">Art, wonder, and a surprise after dark</div>
+    <button class="day-back" onclick="prevDay()">← Tag 1</button>
+    <div class="day-eyebrow">Tag 2 · Donnerstag, 2. April</div>
+    <div class="day-title">Glas, Gold<br>&amp; ein besonderer Abend</div>
+    <div class="day-subtitle">Paris von seiner prächtigsten Seite</div>
   </div>
   <div class="day-scroll">
+    <div class="tl-section-label">Heute</div>
 
-    <div class="timeline">
-      <div class="tl-label">Today</div>
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">14:00</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">The Louvre</div>
-          <div class="tl-event-desc">The world's greatest museum. We won't see it all — nobody does — but we'll find the rooms that feel like ours.</div>
-          <span class="tl-tag">Booked ✓</span>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">Evening</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">Dinner — you choose</div>
-          <div class="tl-event-desc">I have something in mind, but the decision is yours. Three very different evenings. One choice.</div>
-          <span class="tl-mystery" onclick="showSection('choices-d2')">✦ Make your choice</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Morgen</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Frühstück — du wählst</div>
+        <div class="tl-desc">Zwei Adressen, beide außergewöhnlich. Welche klingt nach deinem Morgen?</div>
+        <span class="tl-reveal" onclick="showEl('choices-bk')">✦ Wähle dein Frühstück</span>
       </div>
     </div>
 
-    <div id="choices-d2" style="display:none;">
-      <div class="divider"></div>
-      <div class="choices-section">
-        <div class="pack-label">Tonight's dinner</div>
-        <div class="choices-intro">Three doors. Read each one slowly. Pick the evening that calls to you — I'll handle the rest.</div>
-        <div class="choice-cards" id="cards-d2">
-          <div class="choice-card" onclick="pickCard('d2', 0, 'A rooftop view it is. I\'ll make sure we\'re dressed for it.')">
-            <div class="card-num">No. 01</div>
-            <div class="card-clue">"The city stretches below you like a secret someone finally told. The wine arrives before you ask for it. You won't want the night to end."</div>
-            <div class="card-mood">elevation · stillness · dress to feel wonderful</div>
-            <span class="card-chosen-badge">chosen</span>
-          </div>
-          <div class="choice-card" onclick="pickCard('d2', 1, 'A timeless evening then. I had a feeling.')">
-            <div class="card-num">No. 02</div>
-            <div class="card-clue">"Forty years on the same corner, the same linen napkins, the same waiter who remembers everything. The kind of meal you'll tell people about for years."</div>
-            <div class="card-mood">tradition · warmth · unhurried</div>
-            <span class="card-chosen-badge">chosen</span>
-          </div>
-          <div class="choice-card" onclick="pickCard('d2', 2, 'The adventurous one. I love that about you.')">
-            <div class="card-num">No. 03</div>
-            <div class="card-clue">"Every plate surprises you. The chef's handwriting is all over it. Small portions, enormous feelings. You'll want to order everything twice."</div>
-            <div class="card-mood">discovery · creativity · conversation-starter</div>
-            <span class="card-chosen-badge">chosen</span>
-          </div>
+    <div id="choices-bk" style="display:none;padding:0 0 1.8rem 0;">
+      <div class="choices-intro">Lies beide in Ruhe — dann folg deinem Bauchgefühl.</div>
+      <div class="choice-cards" id="cards-breakfast">
+        <div class="c-card" onclick="pickBreakfast('a')">
+          <div class="c-num">Adresse A</div>
+          <div class="c-clue">"Eine Bäckerei, die Croissants zu kleinen Kunstwerken macht. Die Vitrinen sehen aus, als hätte jemand die ganze Nacht daran gearbeitet — weil jemand das getan hat."</div>
+          <div class="c-mood">modern · präzise · ein Erlebnis für die Augen</div>
+          <span class="c-badge">gewählt</span>
         </div>
-        <div class="choice-feedback" id="feedback-d2"></div>
+        <div class="c-card" onclick="pickBreakfast('b')">
+          <div class="c-num">Adresse B</div>
+          <div class="c-clue">"Dieselbe Straßenecke, dieselben Hände, dieselbe Handwerkskunst — seit mehr Jahren als man zählen möchte. Der Duft allein ist einen Umweg wert."</div>
+          <div class="c-mood">klassisch · zeitlos · das echte Paris</div>
+          <span class="c-badge">gewählt</span>
+        </div>
+      </div>
+      <div class="c-feedback" id="feedback-breakfast"></div>
+      <div class="note-box">Die andere Adresse besuchen wir übermorgen — du bekommst beide zu sehen.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Vormittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Die Kuppel, die einen sprachlos macht</div>
+        <div class="tl-desc">Nicht wegen dem, was man kaufen kann — sondern wegen dem, was man sieht, wenn man den Kopf hebt. Einfach nach oben schauen. Das reicht schon.</div>
+        <span class="tl-tag">Grands Boulevards</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Mittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Mittagessen — du wählst</div>
+        <div class="tl-desc">Zwei völlig verschiedene Mittagsstimmungen.</div>
+        <span class="tl-reveal" onclick="showEl('choices-lunch2')">✦ Wähle dein Mittagessen</span>
+      </div>
+    </div>
+
+    <div id="choices-lunch2" style="display:none;padding:0 0 1.8rem 0;">
+      <div class="choices-intro">Kein falsches Antwort. Nur deine.</div>
+      <div class="choice-cards" id="cards-lunch-d2">
+        <div class="c-card" onclick="pickChoice('lunch-d2',0)">
+          <div class="c-num">Option A</div>
+          <div class="c-clue">"Ein kleines Bistro, das klingt wie es heißt — und hält, was der Name verspricht. Die Karte passt auf eine Serviette. Das Essen bleibt im Gedächtnis."</div>
+          <div class="c-mood">klein · persönlich · gemütlich</div>
+          <span class="c-badge">gewählt</span>
+        </div>
+        <div class="c-card" onclick="pickChoice('lunch-d2',1)">
+          <div class="c-num">Option B</div>
+          <div class="c-clue">"Weiße Tischdecken, geschäftige Kellner, ein kühles Glas Weißwein. Das klassische Pariser Mittagessen — laut, schön, so wie es immer war."</div>
+          <div class="c-mood">klassisch · belebt · Pariser Seele</div>
+          <span class="c-badge">gewählt</span>
+        </div>
+      </div>
+      <div class="c-feedback" id="feedback-lunch-d2"></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Nachmittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der berühmteste Konditor der Stadt</div>
+        <div class="tl-desc">Seine Kreationen sehen aus wie Schmuck — man zögert, hineinzubeißen. Aber man tut es. Wir kaufen etwas mit, solange noch etwas übrig ist.</div>
+        <span class="tl-tag">Konditorei · Opéra</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ein Garten, der sich versteckt</div>
+        <div class="tl-desc">Mitten in der Stadt, hinter weißen Arkaden — fast unsichtbar, bis man ihn kennt. Vielleicht kommt er dir bekannt vor.</div>
+        <span class="tl-tag">Garten · 1er</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">14:00</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Das größte Haus der Welt</div>
+        <div class="tl-desc">Ein Palast voller Geheimnisse. Wir werden nicht alles sehen — niemand schafft das — aber wir finden die Räume, die sich nach uns anfühlen.</div>
+        <span class="tl-tag">Reserviert ✓</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Spätnachmittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Die dickste heiße Schokolade der Welt</div>
+        <div class="tl-desc">So dick, dass der Löffel stehen bleibt. Seit über hundert Jahren dieselbe Rezeptur — falls die Schlange zu lang ist, nehmen wir sie einfach mit.</div>
+        <span class="tl-tag">Rue de Rivoli</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der weiteste Blick der Stadt</div>
+        <div class="tl-desc">Ein Platz so groß, dass man die Enden nicht sieht — und dann der berühmteste Boulevard der Welt. Wir gehen einfach, ohne Ziel.</div>
+        <span class="tl-tag">8ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Kurz zurück, umziehen</div>
+        <div class="tl-desc">Der Abend hat ein gewisses Gewicht — kleid dich, als würdest du eine Erinnerung planen.</div>
+        <span class="tl-tag soft">kurze Pause</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Abend</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ein Abend, den du nicht vergisst</div>
+        <div class="tl-desc">Ich habe etwas reserviert — lass dich einfach überraschen. Ich verspreche, es passt zu dir.</div>
+        <span class="tl-tag">Reserviert ✓ · Überraschung</span>
       </div>
     </div>
 
     <div class="divider"></div>
-
-    <div class="pack-section">
-      <div class="pack-label">What to wear today</div>
-      <div class="pack-hint">Museums are cool even in April. Then the evening has a certain weight to it — pack something you'd choose for a memory.</div>
-      <div class="pack-pills">
-        <span class="pill key">comfortable shoes (Louvre floors)</span>
-        <span class="pill key">your favourite evening outfit</span>
-        <span class="pill">a scarf for indoors</span>
-        <span class="pill">small evening bag</span>
-        <span class="pill">a little perfume</span>
-      </div>
+    <div class="pack-label">Was du heute brauchst</div>
+    <div class="pack-hint">Kühle Räume am Nachmittag — ein besonderer Abend danach. Pack für beides.</div>
+    <div class="pack-pills">
+      <span class="pill key">bequeme Schuhe</span>
+      <span class="pill key">dein schönstes Abendoutfit</span>
+      <span class="pill">Schal für drinnen</span>
+      <span class="pill">kleine Abendtasche</span>
+      <span class="pill">ein bisschen Parfum</span>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════ DAY 3 ══════════ -->
-<div class="screen day-screen" id="day-2">
+<!-- TAG 3 -->
+<div class="screen" id="day-2">
   <div class="day-header">
-    <button class="day-back" onclick="prevDay()">← Day 2</button>
-    <div class="day-eyebrow">Day 3 · Thursday 3 April</div>
-    <div class="day-title">Light, art &<br>a long dinner</div>
-    <div class="day-subtitle">The most full day — the best one</div>
+    <button class="day-back" onclick="prevDay()">← Tag 2</button>
+    <div class="day-eyebrow">Tag 3 · Freitag, 3. April</div>
+    <div class="day-title">Stille, Licht<br>&amp; sechs Gänge</div>
+    <div class="day-subtitle">Der längste und vollste Tag — der beste</div>
   </div>
   <div class="day-scroll">
+    <div class="tl-section-label">Heute</div>
 
-    <div class="timeline">
-      <div class="tl-label">Today</div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Morgen</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der Kaffee, der einen Unterschied macht</div>
+        <div class="tl-desc">Eine kleine Rösterei mit sehr viel Geschmack. Hier beginnt der Morgen richtig.</div>
+        <span class="tl-tag">Frühstück · Specialty Coffee</span>
+      </div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">11:30</div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ein stiller Park voller Geschichten</div>
+        <div class="tl-desc">Kein trauriger Ort — ein grüner Park, der wie ein offenes Buch ist. Dichter, Musiker, Liebende schlafen hier. Chopin. Eine Sängerin, die alle kennen. Ein irischer Schriftsteller mit einem Lächeln. Wir besuchen, wen wir möchten.</div>
+        <span class="tl-tag">20ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">11:30</div></div>
+      <div class="tl-right">
+        <div class="tl-name">In ein Gemälde hineingehen</div>
+        <div class="tl-desc">Das ganze Gebäude wird zur Kunst — Licht und Musik füllen jede Wand, jeden Boden, jede Decke. Es ist unmöglich, dabei nichts zu fühlen.</div>
+        <span class="tl-tag">Reserviert ✓</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Mittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Das herzhafteste Croissant der Stadt</div>
+        <div class="tl-desc">Noch kein langer Anstieg — aber die, die es kennen, halten es für sich. Wir gehören jetzt dazu.</div>
+        <span class="tl-tag">Bäckerei · Marais</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der schönste Platz der Stadt</div>
+        <div class="tl-desc">Rote Backsteinbögen, Arkaden, ein Brunnen in der Mitte. Einer der berühmtesten Franzosen hat hier gewohnt. Wir essen etwas Einfaches — Steak, Baguette, eine Bank in der Sonne. Das ist das Mittagessen. Das ist Paris.</div>
+        <span class="tl-tag">3ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Nachmittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Zwei Kathedralen — eine Entscheidung</div>
+        <div class="tl-desc">Beide sehen wir. In eine gehen wir hinein. Das wählst du.</div>
+        <span class="tl-reveal" onclick="showEl('choices-church')">✦ Wähle dein Inneres</span>
+      </div>
+    </div>
+
+    <div id="choices-church" style="display:none;padding:0 0 1.8rem 0;">
+      <div class="choices-intro">Zwei Kathedralen. Zwei völlig verschiedene Gefühle.</div>
+      <div class="choice-cards" id="cards-church">
+        <div class="c-card" onclick="pickChoice('church',0)">
+          <div class="c-num">Kathedrale A</div>
+          <div class="c-clue">"Wieder aufgebaut, wieder aufrecht. Die ganze Welt hat zugeschaut — jetzt gehen wir hinein und sehen, was geblieben ist."</div>
+          <div class="c-mood">Wiedergeburt · Geschichte · Erhabenheit</div>
+          <span class="c-badge">gewählt</span>
         </div>
-        <div class="tl-right">
-          <div class="tl-event-title">Atelier des Lumières</div>
-          <div class="tl-event-desc">Walk inside paintings. The whole building becomes the art — light and music fill every wall, floor, ceiling. It's impossible not to feel something.</div>
-          <span class="tl-tag">Booked ✓</span>
+        <div class="c-card" onclick="pickChoice('church',1)">
+          <div class="c-num">Kathedrale B</div>
+          <div class="c-clue">"Tausend Fenster, ein einziges Licht. Ein gotisches Meisterwerk, das kaum jemand für möglich hält — bis man drinsteht und die Luft anhält."</div>
+          <div class="c-mood">Glasmalerei · Stille · Überraschung</div>
+          <span class="c-badge">gewählt</span>
         </div>
       </div>
+      <div class="c-feedback" id="feedback-church"></div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">Afternoon</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">The afternoon is yours</div>
-          <div class="tl-event-desc">Coffee, wandering, maybe a window full of things we can't afford. No plans — just following whatever catches your eye.</div>
-          <span class="tl-tag">Free time</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Die Gruft der Großen</div>
+        <div class="tl-desc">Kurz hinein, kurz innehalten. Die Namen, die man auf dem Steinboden liest, kennt man aus der Schule — und plötzlich sind sie real.</div>
+        <span class="tl-tag">5ème</span>
       </div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">20:00</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">De Vie Restaurant</div>
-          <div class="tl-event-desc">Our table is booked. The kind of dinner Paris was made for — unhurried, candlelit, with nowhere else to be.</div>
-          <span class="tl-tag">Booked ✓</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ein Platz, den fast niemand sucht</div>
+        <div class="tl-desc">Klein, ruhig — einer jener Orte, die in einer Geschichte auftauchen, die du vielleicht kennst. Erkennst du ihn?</div>
+        <span class="tl-tag">5ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der Park mit den kleinen Segelbooten</div>
+        <div class="tl-desc">Stühle an jeder Ecke, ein Brunnen in der Mitte, Kinder die spielen. Wir setzen uns kurz — die Füße haben es verdient.</div>
+        <span class="tl-tag">6ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Abend</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Natürlich</div>
+        <div class="tl-desc">Wir gehen hin. Einfach davor stehen und schauen. Manche Dinge braucht man nicht zu erklären.</div>
+        <span class="tl-tag">7ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der beste Blick auf alles</div>
+        <div class="tl-desc">Goldene Statuen, die ganze Stadt darunter. Das Foto, das wir uns merken werden.</div>
+        <span class="tl-tag">16ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Zurück — der Abend wartet</div>
+        <div class="tl-desc">Nimm dir die Zeit. Heute Abend ist besonders.</div>
+        <span class="tl-tag soft">kurz umziehen</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">20:00</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Sechs Gänge. Kein Plan danach.</div>
+        <div class="tl-desc">Unser Tisch ist reserviert. Das ist kein Abendessen — das ist ein ganzer Abend. Kein Blick auf die Uhr, nirgendwo anders hin.</div>
+        <span class="tl-tag">Reserviert ✓ · 6-Gänge-Menü</span>
       </div>
     </div>
 
     <div class="divider"></div>
-
-    <div class="pack-section">
-      <div class="pack-label">What to wear today</div>
-      <div class="pack-hint">The morning is immersive art — wear what you'll want to look good in anyway, because the light in there is beautiful. Tonight is dinner-worthy.</div>
-      <div class="pack-pills">
-        <span class="pill key">something beautiful for dinner</span>
-        <span class="pill key">layers for the morning</span>
-        <span class="pill">flat shoes or low heels</span>
-        <span class="pill">a small bag that works day to night</span>
-      </div>
+    <div class="pack-label">Was du heute brauchst</div>
+    <div class="pack-hint">Ein langer Tag — bequem am Morgen, schön am Abend. Wer möchte, wechselt zwischendurch.</div>
+    <div class="pack-pills">
+      <span class="pill key">etwas Schönes für das Abendessen</span>
+      <span class="pill key">Lagen für den Morgen</span>
+      <span class="pill">flache Schuhe oder leichte Absätze</span>
+      <span class="pill">Tasche, die Tag und Nacht passt</span>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════ DAY 4 ══════════ -->
-<div class="screen day-screen" id="day-3">
+<!-- TAG 4 -->
+<div class="screen" id="day-3">
   <div class="day-header">
-    <button class="day-back" onclick="prevDay()">← Day 3</button>
-    <div class="day-eyebrow">Day 4 · Friday 4 April</div>
-    <div class="day-title">Last morning<br>in Paris</div>
-    <div class="day-subtitle">Slow coffee, one last croissant, then home</div>
+    <button class="day-back" onclick="prevDay()">← Tag 3</button>
+    <div class="day-eyebrow">Tag 4 · Samstag, 4. April</div>
+    <div class="day-title">Der letzte<br>Morgen</div>
+    <div class="day-subtitle">Langsam beginnen — gut enden</div>
   </div>
   <div class="day-scroll">
+    <div class="tl-section-label">Heute</div>
 
-    <div class="timeline">
-      <div class="tl-label">Today</div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Koffer bleiben</div>
+        <div class="tl-desc">Gepäck bis heute Abend an der Rezeption — heute sind wir leicht.</div>
+        <span class="tl-tag soft">Check-out · Gepäck bleibt</span>
+      </div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">Morning</div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Morgen</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Frühstück — die andere Adresse</div>
+        <div class="tl-desc" id="d4-breakfast-desc">Wir haben versprochen, beide zu besuchen — heute ist die andere dran.</div>
+        <div id="d4-breakfast-card" style="margin-top:.8rem;"></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Vormittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Ein letztes Erlebnis — du wählst</div>
+        <div class="tl-desc">Zwei sehr verschiedene Orte. Welcher zieht dich an?</div>
+        <span class="tl-reveal" onclick="showEl('choices-museum')">✦ Wähle deinen Vormittag</span>
+      </div>
+    </div>
+
+    <div id="choices-museum" style="display:none;padding:0 0 1.8rem 0;">
+      <div class="choice-cards" id="cards-museum">
+        <div class="c-card" onclick="pickChoice('museum',0)">
+          <div class="c-num">Option A</div>
+          <div class="c-clue">"Ein Künstler ohne Namen, eine Ausstellung, die keine braucht. Kunst, die einst auf Mauern gehörte — jetzt zwischen vier Wänden, und trotzdem noch genauso laut."</div>
+          <div class="c-mood">rebellisch · überraschend · modern</div>
+          <span class="c-badge">gewählt</span>
         </div>
-        <div class="tl-right">
-          <div class="tl-event-title">No alarm, no rush</div>
-          <div class="tl-event-desc">Paris is most beautiful in the morning before it wakes up. Breakfast, a slow walk, take our time.</div>
-          <span class="tl-tag">Free</span>
+        <div class="c-card" onclick="pickChoice('museum',1)">
+          <div class="c-num">Option B</div>
+          <div class="c-clue">"Das schönste Museum der Stadt — in einem alten Bahnhof, als hätte jemand die Zeit angehalten. Die Namen, die du kennst. Die Bilder, die du nie vergisst."</div>
+          <div class="c-mood">klassisch · weitläufig · zeitlos</div>
+          <span class="c-badge">gewählt</span>
         </div>
       </div>
+      <div class="c-feedback" id="feedback-museum"></div>
+    </div>
 
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot"></div>
-          <div class="tl-time">18:00</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-event-title">We leave</div>
-          <div class="tl-event-desc">The city will still be here. So will we. But now we go home — with better stories than when we arrived.</div>
-          <span class="tl-tag">Departure</span>
-        </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Mittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Eine vergessene Flamme</div>
+        <div class="tl-desc">Eigentlich ein Geschenk — heute ein stilles Denkmal. Klein, golden, bedeutsam. Die meisten laufen daran vorbei.</div>
+        <span class="tl-tag">8ème</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Eine Welt in einer Nuss</div>
+        <div class="tl-desc">Alles grün. Alles eine einzige Zutat. Ein kleiner Laden, der das Beste aus ihr macht — in jeder erdenklichen Form.</div>
+        <span class="tl-tag">Konditorei · Spezialität</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Mittagessen wie ein Pariser</div>
+        <div class="tl-desc">Ein kleines Weinbistro mit kurzer Karte und langen Gesprächen. Kein Stress, ein gutes Glas, schöne Gesellschaft.</div>
+        <span class="tl-tag">Bistro · Naturwein</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Nachmittag</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Schokolade trifft Croissant</div>
+        <div class="tl-desc">Beides zusammen bestellt, beides zusammen genossen. Paris in einer Hand — noch einmal.</div>
+        <span class="tl-tag">Café · Spezialität</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Falls noch Zeit ist</div>
+        <div class="tl-desc">Ein letzter Spaziergang, kein Plan. Die Stadt ist am schönsten, wenn man sie einfach gehen lässt.</div>
+        <span class="tl-tag">Freizeit</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Früh Abend</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Der eleganteste Gedanke für den Zug</div>
+        <div class="tl-desc">Ein letzter Kauf in Paris — etwas Süßes für die Reise. Ich nehme natürlich auch eines.</div>
+        <span class="tl-tag">Für unterwegs</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Das Sandwich, das sich lohnt</div>
+        <div class="tl-desc">In einer überdachten Markthalle, mit einer Schlange davor, die man gerne in Kauf nimmt. Das heben wir uns für die Zugfahrt auf.</div>
+        <span class="tl-tag">Für die Heimreise</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot soft"></div></div>
+      <div class="tl-right">
+        <div class="tl-name">Koffer holen</div>
+        <div class="tl-desc">Ein letzter Blick auf die Lobby. Dann gehen wir.</div>
+        <span class="tl-tag soft">Abreise</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">19:40</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Heimwärts</div>
+        <div class="tl-desc">Paris bleibt — wir fahren heim. Mit besseren Geschichten als dahin. Mit Sandwich und etwas Süßem. Zusammen.</div>
+        <span class="tl-tag">Paris Est · Richtung Luxemburg</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">21:53</div></div>
+      <div class="tl-right">
+        <div class="tl-name">Zu Hause</div>
+        <div class="tl-desc">Aber ein kleines bisschen Paris nehmen wir immer mit.</div>
+        <span class="tl-tag">Luxemburg</span>
       </div>
     </div>
 
     <div class="divider"></div>
-
-    <div class="pack-section">
-      <div class="pack-label">Last day essentials</div>
-      <div class="pack-hint">Pack light, carry everything that matters. Leave some space in your bag — Paris has a way of filling it.</div>
-      <div class="pack-pills">
-        <span class="pill key">comfortable travel outfit</span>
-        <span class="pill">sunglasses (fingers crossed)</span>
-        <span class="pill">something to write in</span>
-        <span class="pill">your packed bags</span>
-      </div>
+    <div class="pack-label">Was du heute brauchst</div>
+    <div class="pack-hint">Reisetag — Komfort. Lass ein bisschen Platz im Koffer. Paris hat eine Art, ihn zu füllen.</div>
+    <div class="pack-pills">
+      <span class="pill key">bequemes Reise-Outfit</span>
+      <span class="pill">Sonnenbrille (Daumen gedrückt)</span>
+      <span class="pill">etwas zum Schreiben</span>
     </div>
 
-    <div style="text-align: center; padding: 1.5rem 0 0.5rem;">
-      <div style="width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); margin: 0 auto 1.2rem;"></div>
-      <div style="font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--cream-dim); line-height: 1.6;">
-        Thank you for every moment.<br>Every single one.
-      </div>
+    <div class="closing">
+      <div class="closing-line"></div>
+      <div class="closing-text">Danke für jeden Moment.<br>Jeden einzelnen.</div>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════ NAV BAR ══════════ -->
 <div class="nav-bar" id="nav-bar">
   <div class="nav-dots">
     <div class="nav-dot active" id="dot-0"></div>
@@ -601,113 +634,71 @@
     <div class="nav-dot" id="dot-2"></div>
     <div class="nav-dot" id="dot-3"></div>
   </div>
-  <button class="nav-next" id="nav-next-btn" onclick="nextDay()">Next day →</button>
+  <button class="nav-next" id="nav-next-btn" onclick="nextDay()">Nächster Tag →</button>
 </div>
 
 <script>
-  var currentDay = -1;
-  var totalDays = 4;
+var cur=-1,tot=4;
+function goToDay(i){
+  var p=cur;cur=i;
+  if(p===-1){var c=document.getElementById('cover');c.classList.remove('active');c.classList.add('exit');setTimeout(function(){c.classList.remove('exit');},600);}
+  else{var pe=document.getElementById('day-'+p);pe.classList.remove('active');pe.classList.add('exit');setTimeout(function(){pe.classList.remove('exit');},600);}
+  document.getElementById('day-'+i).classList.add('active');
+  if(i===3)initDay4();
+  upNav();
+}
+function prevDay(){if(cur===0){goBack();return;}goToDay(cur-1);}
+function nextDay(){if(cur<tot-1)goToDay(cur+1);}
+function goBack(){
+  var p=document.getElementById('day-'+cur);p.classList.remove('active');p.classList.add('exit');setTimeout(function(){p.classList.remove('exit');},600);
+  var c=document.getElementById('cover');c.classList.remove('exit');c.classList.add('active');
+  document.getElementById('nav-bar').classList.remove('show');cur=-1;
+}
+function upNav(){
+  document.getElementById('nav-bar').classList.add('show');
+  for(var i=0;i<tot;i++)document.getElementById('dot-'+i).classList.toggle('active',i===cur);
+  document.getElementById('nav-next-btn').style.visibility=cur===tot-1?'hidden':'visible';
+}
+function showEl(id){var el=document.getElementById(id);if(!el)return;el.style.display='block';setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);}
 
-  function goToDay(i) {
-    var prev = currentDay;
-    currentDay = i;
-
-    if (prev === -1) {
-      document.getElementById('cover').classList.remove('active');
-      document.getElementById('cover').classList.add('exit');
-    } else {
-      var prevEl = document.getElementById('day-' + prev);
-      prevEl.classList.remove('active');
-      prevEl.classList.add('exit');
-      setTimeout(function() { prevEl.classList.remove('exit'); }, 600);
-    }
-
-    var cur = document.getElementById('day-' + i);
-    cur.style.transform = 'translateX(30px)';
-    cur.classList.add('active');
-    updateNav();
-  }
-
-  function prevDay() {
-    if (currentDay === 0) {
-      goBack(); return;
-    }
-    goToDay(currentDay - 1);
-  }
-
-  function nextDay() {
-    if (currentDay < totalDays - 1) {
-      goToDay(currentDay + 1);
-    }
-  }
-
-  function goBack() {
-    var prevEl = document.getElementById('day-' + currentDay);
-    prevEl.classList.remove('active');
-    prevEl.classList.add('exit');
-    setTimeout(function() { prevEl.classList.remove('exit'); }, 600);
-
-    var cover = document.getElementById('cover');
-    cover.style.transform = 'translateX(-30px)';
-    cover.classList.remove('exit');
-    cover.classList.add('active');
-    cover.style.transform = '';
-
-    document.getElementById('nav-bar').classList.remove('visible');
-    currentDay = -1;
-  }
-
-  function updateNav() {
-    var bar = document.getElementById('nav-bar');
-    bar.classList.add('visible');
-    for (var i = 0; i < totalDays; i++) {
-      document.getElementById('dot-' + i).classList.toggle('active', i === currentDay);
-    }
-    var btn = document.getElementById('nav-next-btn');
-    if (currentDay === totalDays - 1) {
-      btn.style.visibility = 'hidden';
-    } else {
-      btn.style.visibility = 'visible';
-    }
-  }
-
-  function showSection(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      el.style.display = 'block';
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  var cardFeedback = {
-    'd2': ["A rooftop view it is. I'll make sure we're dressed for it.", "A timeless evening then. I had a feeling.", "The adventurous one. I love that about you."]
-  };
-
-  function pickCard(day, idx, msg) {
-    var container = document.getElementById('cards-' + day);
-    var cards = container.querySelectorAll('.choice-card');
-    cards.forEach(function(c, i) {
-      c.classList.remove('chosen', 'unchosen');
-      if (i === idx) c.classList.add('chosen');
-      else c.classList.add('unchosen');
-    });
-    var feedback = document.getElementById('feedback-' + day);
-    feedback.textContent = msg;
-    feedback.classList.add('visible');
-  }
-
-  // Swipe navigation
-  var touchStartX = 0;
-  document.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
-  document.addEventListener('touchend', function(e) {
-    var dx = e.changedTouches[0].clientX - touchStartX;
-    if (currentDay === -1) return;
-    if (Math.abs(dx) < 60) return;
-    if (dx < 0) nextDay();
-    else prevDay();
-  }, { passive: true });
+var bkL={
+  a:{clue:'"Eine Bäckerei, die Croissants zu kleinen Kunstwerken macht. Die Vitrinen sehen aus, als hätte jemand die ganze Nacht daran gearbeitet — weil jemand das getan hat."',mood:'modern · präzise · ein Erlebnis für die Augen'},
+  b:{clue:'"Dieselbe Straßenecke, dieselben Hände, dieselbe Handwerkskunst — seit mehr Jahren als man zählen möchte. Der Duft allein ist einen Umweg wert."',mood:'klassisch · zeitlos · das echte Paris'}
+};
+function pickBreakfast(ch){
+  try{localStorage.setItem('paris_bk',ch);}catch(e){}
+  applyC('cards-breakfast',ch==='a'?0:1);
+  var fb=document.getElementById('feedback-breakfast');
+  fb.textContent=ch==='a'?'Dann beginnen wir dort — die andere kommt übermorgen dran.':'Die klassische Wahl. Übermorgen die andere. Versprochen.';
+  fb.classList.add('show');
+}
+function initDay4(){
+  var s;try{s=localStorage.getItem('paris_bk');}catch(e){}
+  var o=s==='a'?'b':'a',l=bkL[o];
+  if(!l)return;
+  document.getElementById('d4-breakfast-desc').textContent='Wir haben versprochen, beide zu besuchen — heute ist die andere dran.';
+  document.getElementById('d4-breakfast-card').innerHTML='<div class="c-card auto-chosen" style="pointer-events:none;"><div class="c-num">Adresse '+(o==='a'?'A':'B')+'</div><div class="c-clue">'+l.clue+'</div><div class="c-mood">'+l.mood+'</div><span class="c-badge">heute</span></div>';
+}
+var cfb={'lunch-d2':['Ein kleines Bistro. Ich freue mich.','Eine echte Brasserie. Perfekte Wahl.'],'church':['Die wiedergeborene Kathedrale. Ich freue mich sehr.','Tausend Fenster. Sehr gute Wahl.'],'museum':['Straßenkunst zwischen Wänden. Gute Wahl.','Die Impressionisten zu Hause. Wunderschön.']};
+function pickChoice(key,idx){
+  try{localStorage.setItem('paris_'+key,idx);}catch(e){}
+  applyC('cards-'+key,idx);
+  var fb=document.getElementById('feedback-'+key);
+  if(fb){fb.textContent=cfb[key]?cfb[key][idx]:'';fb.classList.add('show');}
+}
+function applyC(cid,idx){
+  var c=document.getElementById(cid);if(!c)return;
+  c.querySelectorAll('.c-card').forEach(function(el,i){el.classList.remove('chosen','unchosen');el.classList.add(i===idx?'chosen':'unchosen');});
+}
+function restore(){
+  ['lunch-d2','church','museum'].forEach(function(k){var s;try{s=localStorage.getItem('paris_'+k);}catch(e){}if(s!==null&&s!==undefined)applyC('cards-'+k,parseInt(s));});
+  var bk;try{bk=localStorage.getItem('paris_bk');}catch(e){}
+  if(bk){applyC('cards-breakfast',bk==='a'?0:1);var fb=document.getElementById('feedback-breakfast');if(fb){fb.textContent='Deine Wahl ist gespeichert.';fb.classList.add('show');}}
+}
+restore();
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(cur===-1)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)<65)return;if(dx<0)nextDay();else prevDay();},{passive:true});
 </script>
 </body>
 </html>

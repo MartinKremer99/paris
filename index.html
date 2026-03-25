@@ -13,6 +13,21 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:translateX(30px);}
 .screen.active{opacity:1;pointer-events:all;transform:translateX(0);}
 .screen.exit{opacity:0;transform:translateX(-30px);pointer-events:none;}
+
+/* COUNTDOWN SCREEN */
+#countdown-screen{align-items:center;justify-content:center;text-align:center;padding:2rem;background:var(--bg);}
+.cd-line{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);margin:0 auto 2rem;opacity:0;animation:fadeUp 1s .3s forwards;}
+.cd-label{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .8s .6s forwards;margin-bottom:1rem;}
+.cd-title{font-family:var(--serif);font-size:clamp(60px,18vw,90px);font-weight:300;font-style:italic;line-height:.95;color:var(--cream);opacity:0;animation:fadeUp .9s .8s forwards;margin-bottom:2rem;}
+.cd-until{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-faint);opacity:0;animation:fadeUp .8s 1s forwards;margin-bottom:1.5rem;}
+.cd-blocks{display:flex;gap:1.2rem;justify-content:center;opacity:0;animation:fadeUp .8s 1.2s forwards;}
+.cd-block{display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+.cd-num{font-family:var(--serif);font-size:46px;font-weight:300;color:var(--cream);line-height:1;}
+.cd-unit{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);}
+.cd-sep{font-family:var(--serif);font-size:36px;color:var(--cream-faint);padding-top:.2rem;align-self:flex-start;margin-top:.3rem;}
+.cd-sub{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-dim);opacity:0;animation:fadeUp .8s 1.5s forwards;margin-top:2.5rem;line-height:1.6;}
+
+/* COVER */
 #cover{align-items:center;justify-content:center;text-align:center;background:var(--bg);padding:2rem;}
 .cover-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);margin:0 auto 2rem;opacity:0;animation:fadeUp 1s .3s forwards;}
 .cover-label{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .8s .6s forwards;margin-bottom:1.2rem;}
@@ -21,6 +36,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 .cover-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);opacity:0;animation:fadeUp .8s 1.3s forwards;margin-bottom:3.5rem;}
 .cover-btn{display:inline-flex;align-items:center;gap:10px;border:.5px solid var(--border);border-radius:40px;padding:14px 32px;cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);background:transparent;opacity:0;animation:fadeUp .8s 1.6s forwards;transition:background .3s;}
 .cover-btn:active{background:var(--gold-faint);}
+
+/* DAY */
 .day-header{padding:3.2rem 1.8rem 1.4rem;border-bottom:.5px solid var(--border);flex-shrink:0;}
 .day-back{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);cursor:pointer;margin-bottom:1.6rem;background:none;border:none;font-family:var(--sans);}
 .day-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
@@ -28,6 +45,19 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 .day-subtitle{font-size:12px;color:var(--cream-dim);letter-spacing:.06em;font-family:var(--serif);font-style:italic;}
 .day-scroll{flex:1;overflow-y:auto;padding:1.8rem 1.8rem 7rem 1.8rem;-webkit-overflow-scrolling:touch;}
 .day-scroll::-webkit-scrollbar{display:none;}
+
+/* LOCKED DAY */
+.locked-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;}
+.lock-icon{font-size:28px;margin-bottom:1.5rem;opacity:.4;}
+.lock-title{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--cream-dim);margin-bottom:.8rem;}
+.lock-cd{display:flex;gap:1rem;justify-content:center;margin-top:1.2rem;}
+.lock-block{display:flex;flex-direction:column;align-items:center;gap:.3rem;}
+.lock-num{font-family:var(--serif);font-size:34px;font-weight:300;color:var(--cream);}
+.lock-unit{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-faint);}
+.lock-sep{font-family:var(--serif);font-size:26px;color:var(--cream-faint);padding-top:.1rem;align-self:flex-start;margin-top:.3rem;}
+.lock-note{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--cream-faint);margin-top:1.8rem;line-height:1.6;}
+
+/* TIMELINE */
 .tl-section-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.2rem;}
 .tl-item{display:grid;grid-template-columns:52px 1fr;position:relative;}
 .tl-item:not(:last-child)::after{content:'';position:absolute;left:25px;top:28px;bottom:-1px;width:.5px;background:var(--border);}
@@ -38,16 +68,12 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 .tl-right{padding:0 0 1.8rem .8rem;}
 .tl-name{font-family:var(--serif);font-size:19px;font-weight:400;color:var(--cream);margin-bottom:.3rem;line-height:1.3;}
 .tl-desc{font-size:13px;color:var(--cream-dim);line-height:1.75;font-family:var(--serif);font-style:italic;}
-.tl-tag{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:.5px solid var(--border);padding:3px 10px;border-radius:20px;font-family:var(--sans);}
-.tl-tag.soft{color:var(--cream-faint);border-color:rgba(74,64,56,.4);}
 .tl-reveal{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:.5px solid var(--border);padding:3px 10px;border-radius:20px;font-family:var(--sans);cursor:pointer;background:var(--gold-faint);transition:background .2s;}
 .tl-reveal:active{background:var(--gold-dim);}
-.divider{width:40px;height:.5px;background:var(--border);margin:1.6rem 0;}
-.pack-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:.7rem;}
-.pack-hint{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-dim);line-height:1.7;margin-bottom:.9rem;}
-.pack-pills{display:flex;flex-wrap:wrap;gap:7px;}
-.pill{font-size:11px;letter-spacing:.06em;border:.5px solid var(--border);border-radius:20px;padding:5px 13px;color:var(--cream-dim);font-family:var(--sans);background:var(--gold-faint);}
-.pill.key{border-color:rgba(200,164,106,.5);color:var(--cream);background:rgba(200,164,106,.12);}
+.divider{width:40px;height:.5px;background:var(--border);margin:1.4rem 0;}
+.day-hint{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--cream-faint);line-height:1.7;}
+
+/* CHOICES */
 .choices-intro{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-dim);line-height:1.7;margin-bottom:1.1rem;}
 .choice-cards{display:flex;flex-direction:column;gap:10px;}
 .c-card{border:.5px solid var(--border);border-radius:16px;padding:1.3rem 1.4rem;cursor:pointer;background:var(--gold-faint);transition:border-color .3s,background .3s,opacity .3s;position:relative;overflow:hidden;}
@@ -62,12 +88,17 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 .c-feedback{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);min-height:22px;text-align:center;margin-top:.9rem;opacity:0;transition:opacity .4s;}
 .c-feedback.show{opacity:1;}
 .note-box{border:.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;background:var(--gold-faint);font-family:var(--serif);font-style:italic;font-size:14px;color:var(--cream-dim);line-height:1.7;margin-top:.8rem;}
+
+/* NAV */
 .nav-bar{position:fixed;bottom:0;left:0;right:0;padding:1rem 1.8rem 2rem;background:linear-gradient(to top,var(--bg) 60%,transparent);display:none;justify-content:space-between;align-items:center;}
 .nav-bar.show{display:flex;}
 .nav-dots{display:flex;gap:6px;}
 .nav-dot{width:5px;height:5px;border-radius:50%;background:var(--cream-faint);transition:background .3s,width .3s;}
 .nav-dot.active{background:var(--gold);width:16px;border-radius:3px;}
+.nav-dot.locked{background:var(--cream-faint);opacity:.3;}
 .nav-next{font-family:var(--sans);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:6px;}
+.nav-next.dim{color:var(--cream-faint);cursor:default;}
+
 .closing{text-align:center;padding:2rem 0 1rem;}
 .closing-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto 1.2rem;}
 .closing-text{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--cream-dim);line-height:1.7;}
@@ -76,12 +107,31 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
 </head>
 <body>
 
-<div class="screen active" id="cover">
+<!-- COUNTDOWN SCREEN -->
+<div class="screen active" id="countdown-screen">
+  <div class="cd-line"></div>
+  <div class="cd-label">1. – 4. April 2026</div>
+  <div class="cd-title">Paris</div>
+  <div class="cd-until">Noch</div>
+  <div class="cd-blocks">
+    <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-unit">Tage</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">Stunden</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">Minuten</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Sekunden</div></div>
+  </div>
+  <div class="cd-sub">Bis deine Reise beginnt.</div>
+</div>
+
+<!-- COVER -->
+<div class="screen" id="cover">
   <div class="cover-line"></div>
   <div class="cover-label">1. – 4. April 2026</div>
   <div class="cover-title">Paris</div>
   <div class="cover-dates">Vier Tage. Drei Nächte. Nur wir zwei.</div>
-  <div class="cover-sub">Eine Reise, die ich nur für dich geplant habe</div>
+  <div class="cover-sub">Jeder Schritt davon nur für dich</div>
   <button class="cover-btn" onclick="goToDay(0)">Deine Reise öffnen →</button>
 </div>
 
@@ -101,7 +151,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Abfahrt</div>
         <div class="tl-desc">Der Zug fährt ab. Ich habe Snacks eingepackt — mach es dir bequem und schau aus dem Fenster. Paris kommt zu uns.</div>
-        <span class="tl-tag">Zug · Luxemburg</span>
       </div>
     </div>
 
@@ -110,7 +159,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Ankunft</div>
         <div class="tl-desc">Der Lärm, die Luft, das Licht — es fühlt sich sofort anders an. Wir sind da.</div>
-        <span class="tl-tag">Paris Est</span>
       </div>
     </div>
 
@@ -119,7 +167,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Ins Zimmer</div>
         <div class="tl-desc">Taschen abstellen, durchatmen, ankommen.</div>
-        <span class="tl-tag soft">Check-in</span>
       </div>
     </div>
 
@@ -128,7 +175,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der Laden, den alle kennen</div>
         <div class="tl-desc">Ein kleiner Ort um die Ecke, der Burger macht, die sich in Paris herumgesprochen haben. Wir holen sie ab und essen im Zimmer — erster Abend, kein Stress, bestes Essen.</div>
-        <span class="tl-tag">Abendessen · zum Mitnehmen</span>
       </div>
     </div>
 
@@ -137,19 +183,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Gute Nacht</div>
         <div class="tl-desc">Morgen beginnt Paris wirklich.</div>
-        <span class="tl-tag soft">Nacht</span>
       </div>
     </div>
 
     <div class="divider"></div>
-    <div class="pack-label">Was du heute brauchst</div>
-    <div class="pack-hint">Reisetag — Komfort gewinnt. Heb die schönen Sachen für morgen auf.</div>
-    <div class="pack-pills">
-      <span class="pill key">bequeme Schuhe</span>
-      <span class="pill key">leichte Jacke</span>
-      <span class="pill">deine Alltagstasche</span>
-      <span class="pill">etwas Gemütliches fürs Zimmer</span>
-    </div>
+    <div class="day-hint">Reisetag — Komfort gewinnt. Heb die schönen Sachen für morgen auf.</div>
   </div>
 </div>
 
@@ -198,7 +236,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Die Kuppel, die einen sprachlos macht</div>
         <div class="tl-desc">Nicht wegen dem, was man kaufen kann — sondern wegen dem, was man sieht, wenn man den Kopf hebt. Einfach nach oben schauen. Das reicht schon.</div>
-        <span class="tl-tag">Grands Boulevards</span>
       </div>
     </div>
 
@@ -235,7 +272,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der berühmteste Konditor der Stadt</div>
         <div class="tl-desc">Seine Kreationen sehen aus wie Schmuck — man zögert, hineinzubeißen. Aber man tut es. Wir kaufen etwas mit, solange noch etwas übrig ist.</div>
-        <span class="tl-tag">Konditorei · Opéra</span>
       </div>
     </div>
 
@@ -244,7 +280,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Ein Garten, der sich versteckt</div>
         <div class="tl-desc">Mitten in der Stadt, hinter weißen Arkaden — fast unsichtbar, bis man ihn kennt. Vielleicht kommt er dir bekannt vor.</div>
-        <span class="tl-tag">Garten · 1er</span>
       </div>
     </div>
 
@@ -253,7 +288,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Das größte Haus der Welt</div>
         <div class="tl-desc">Ein Palast voller Geheimnisse. Wir werden nicht alles sehen — niemand schafft das — aber wir finden die Räume, die sich nach uns anfühlen.</div>
-        <span class="tl-tag">Reserviert ✓</span>
       </div>
     </div>
 
@@ -262,7 +296,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Die dickste heiße Schokolade der Welt</div>
         <div class="tl-desc">So dick, dass der Löffel stehen bleibt. Seit über hundert Jahren dieselbe Rezeptur — falls die Schlange zu lang ist, nehmen wir sie einfach mit.</div>
-        <span class="tl-tag">Rue de Rivoli</span>
       </div>
     </div>
 
@@ -271,7 +304,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der weiteste Blick der Stadt</div>
         <div class="tl-desc">Ein Platz so groß, dass man die Enden nicht sieht — und dann der berühmteste Boulevard der Welt. Wir gehen einfach, ohne Ziel.</div>
-        <span class="tl-tag">8ème</span>
       </div>
     </div>
 
@@ -280,29 +312,19 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Kurz zurück, umziehen</div>
         <div class="tl-desc">Der Abend hat ein gewisses Gewicht — kleid dich, als würdest du eine Erinnerung planen.</div>
-        <span class="tl-tag soft">kurze Pause</span>
       </div>
     </div>
 
     <div class="tl-item">
       <div class="tl-left"><div class="tl-dot"></div><div class="tl-time">Abend</div></div>
       <div class="tl-right">
-        <div class="tl-name">Ein Abend, den du nicht vergisst</div>
-        <div class="tl-desc">Ich habe etwas reserviert — lass dich einfach überraschen. Ich verspreche, es passt zu dir.</div>
-        <span class="tl-tag">Reserviert ✓ · Überraschung</span>
+        <div class="tl-name">Eine Küche, die flüstert</div>
+        <div class="tl-desc">Klein, intim, mit einer Sorgfalt, die man am Teller spürt. Kein großes Schild draußen — wer hineingeht, weiß, dass er Glück hat. Wir gehören heute dazu.</div>
       </div>
     </div>
 
     <div class="divider"></div>
-    <div class="pack-label">Was du heute brauchst</div>
-    <div class="pack-hint">Kühle Räume am Nachmittag — ein besonderer Abend danach. Pack für beides.</div>
-    <div class="pack-pills">
-      <span class="pill key">bequeme Schuhe</span>
-      <span class="pill key">dein schönstes Abendoutfit</span>
-      <span class="pill">Schal für drinnen</span>
-      <span class="pill">kleine Abendtasche</span>
-      <span class="pill">ein bisschen Parfum</span>
-    </div>
+    <div class="day-hint">Kühle Räume am Nachmittag — ein besonderer Abend danach. Pack für beides.</div>
   </div>
 </div>
 
@@ -322,7 +344,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der Kaffee, der einen Unterschied macht</div>
         <div class="tl-desc">Eine kleine Rösterei mit sehr viel Geschmack. Hier beginnt der Morgen richtig.</div>
-        <span class="tl-tag">Frühstück · Specialty Coffee</span>
       </div>
     </div>
 
@@ -331,7 +352,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Ein stiller Park voller Geschichten</div>
         <div class="tl-desc">Kein trauriger Ort — ein grüner Park, der wie ein offenes Buch ist. Dichter, Musiker, Liebende schlafen hier. Chopin. Eine Sängerin, die alle kennen. Ein irischer Schriftsteller mit einem Lächeln. Wir besuchen, wen wir möchten.</div>
-        <span class="tl-tag">20ème</span>
       </div>
     </div>
 
@@ -340,7 +360,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">In ein Gemälde hineingehen</div>
         <div class="tl-desc">Das ganze Gebäude wird zur Kunst — Licht und Musik füllen jede Wand, jeden Boden, jede Decke. Es ist unmöglich, dabei nichts zu fühlen.</div>
-        <span class="tl-tag">Reserviert ✓</span>
       </div>
     </div>
 
@@ -349,7 +368,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Das herzhafteste Croissant der Stadt</div>
         <div class="tl-desc">Noch kein langer Anstieg — aber die, die es kennen, halten es für sich. Wir gehören jetzt dazu.</div>
-        <span class="tl-tag">Bäckerei · Marais</span>
       </div>
     </div>
 
@@ -358,7 +376,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der schönste Platz der Stadt</div>
         <div class="tl-desc">Rote Backsteinbögen, Arkaden, ein Brunnen in der Mitte. Einer der berühmtesten Franzosen hat hier gewohnt. Wir essen etwas Einfaches — Steak, Baguette, eine Bank in der Sonne. Das ist das Mittagessen. Das ist Paris.</div>
-        <span class="tl-tag">3ème</span>
       </div>
     </div>
 
@@ -395,7 +412,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Die Gruft der Großen</div>
         <div class="tl-desc">Kurz hinein, kurz innehalten. Die Namen, die man auf dem Steinboden liest, kennt man aus der Schule — und plötzlich sind sie real.</div>
-        <span class="tl-tag">5ème</span>
       </div>
     </div>
 
@@ -404,7 +420,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Ein Platz, den fast niemand sucht</div>
         <div class="tl-desc">Klein, ruhig — einer jener Orte, die in einer Geschichte auftauchen, die du vielleicht kennst. Erkennst du ihn?</div>
-        <span class="tl-tag">5ème</span>
       </div>
     </div>
 
@@ -413,7 +428,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der Park mit den kleinen Segelbooten</div>
         <div class="tl-desc">Stühle an jeder Ecke, ein Brunnen in der Mitte, Kinder die spielen. Wir setzen uns kurz — die Füße haben es verdient.</div>
-        <span class="tl-tag">6ème</span>
       </div>
     </div>
 
@@ -422,7 +436,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Natürlich</div>
         <div class="tl-desc">Wir gehen hin. Einfach davor stehen und schauen. Manche Dinge braucht man nicht zu erklären.</div>
-        <span class="tl-tag">7ème</span>
       </div>
     </div>
 
@@ -431,7 +444,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der beste Blick auf alles</div>
         <div class="tl-desc">Goldene Statuen, die ganze Stadt darunter. Das Foto, das wir uns merken werden.</div>
-        <span class="tl-tag">16ème</span>
       </div>
     </div>
 
@@ -440,7 +452,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Zurück — der Abend wartet</div>
         <div class="tl-desc">Nimm dir die Zeit. Heute Abend ist besonders.</div>
-        <span class="tl-tag soft">kurz umziehen</span>
       </div>
     </div>
 
@@ -449,19 +460,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Sechs Gänge. Kein Plan danach.</div>
         <div class="tl-desc">Unser Tisch ist reserviert. Das ist kein Abendessen — das ist ein ganzer Abend. Kein Blick auf die Uhr, nirgendwo anders hin.</div>
-        <span class="tl-tag">Reserviert ✓ · 6-Gänge-Menü</span>
       </div>
     </div>
 
     <div class="divider"></div>
-    <div class="pack-label">Was du heute brauchst</div>
-    <div class="pack-hint">Ein langer Tag — bequem am Morgen, schön am Abend. Wer möchte, wechselt zwischendurch.</div>
-    <div class="pack-pills">
-      <span class="pill key">etwas Schönes für das Abendessen</span>
-      <span class="pill key">Lagen für den Morgen</span>
-      <span class="pill">flache Schuhe oder leichte Absätze</span>
-      <span class="pill">Tasche, die Tag und Nacht passt</span>
-    </div>
+    <div class="day-hint">Ein langer Tag — bequem am Morgen, schön am Abend. Wer möchte, wechselt zwischendurch.</div>
   </div>
 </div>
 
@@ -481,7 +484,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Koffer bleiben</div>
         <div class="tl-desc">Gepäck bis heute Abend an der Rezeption — heute sind wir leicht.</div>
-        <span class="tl-tag soft">Check-out · Gepäck bleibt</span>
       </div>
     </div>
 
@@ -526,7 +528,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Eine vergessene Flamme</div>
         <div class="tl-desc">Eigentlich ein Geschenk — heute ein stilles Denkmal. Klein, golden, bedeutsam. Die meisten laufen daran vorbei.</div>
-        <span class="tl-tag">8ème</span>
       </div>
     </div>
 
@@ -535,7 +536,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Eine Welt in einer Nuss</div>
         <div class="tl-desc">Alles grün. Alles eine einzige Zutat. Ein kleiner Laden, der das Beste aus ihr macht — in jeder erdenklichen Form.</div>
-        <span class="tl-tag">Konditorei · Spezialität</span>
       </div>
     </div>
 
@@ -544,7 +544,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Mittagessen wie ein Pariser</div>
         <div class="tl-desc">Ein kleines Weinbistro mit kurzer Karte und langen Gesprächen. Kein Stress, ein gutes Glas, schöne Gesellschaft.</div>
-        <span class="tl-tag">Bistro · Naturwein</span>
       </div>
     </div>
 
@@ -553,7 +552,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Schokolade trifft Croissant</div>
         <div class="tl-desc">Beides zusammen bestellt, beides zusammen genossen. Paris in einer Hand — noch einmal.</div>
-        <span class="tl-tag">Café · Spezialität</span>
       </div>
     </div>
 
@@ -562,7 +560,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Falls noch Zeit ist</div>
         <div class="tl-desc">Ein letzter Spaziergang, kein Plan. Die Stadt ist am schönsten, wenn man sie einfach gehen lässt.</div>
-        <span class="tl-tag">Freizeit</span>
       </div>
     </div>
 
@@ -571,7 +568,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Der eleganteste Gedanke für den Zug</div>
         <div class="tl-desc">Ein letzter Kauf in Paris — etwas Süßes für die Reise. Ich nehme natürlich auch eines.</div>
-        <span class="tl-tag">Für unterwegs</span>
       </div>
     </div>
 
@@ -580,7 +576,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Das Sandwich, das sich lohnt</div>
         <div class="tl-desc">In einer überdachten Markthalle, mit einer Schlange davor, die man gerne in Kauf nimmt. Das heben wir uns für die Zugfahrt auf.</div>
-        <span class="tl-tag">Für die Heimreise</span>
       </div>
     </div>
 
@@ -589,7 +584,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Koffer holen</div>
         <div class="tl-desc">Ein letzter Blick auf die Lobby. Dann gehen wir.</div>
-        <span class="tl-tag soft">Abreise</span>
       </div>
     </div>
 
@@ -598,7 +592,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Heimwärts</div>
         <div class="tl-desc">Paris bleibt — wir fahren heim. Mit besseren Geschichten als dahin. Mit Sandwich und etwas Süßem. Zusammen.</div>
-        <span class="tl-tag">Paris Est · Richtung Luxemburg</span>
       </div>
     </div>
 
@@ -607,18 +600,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
       <div class="tl-right">
         <div class="tl-name">Zu Hause</div>
         <div class="tl-desc">Aber ein kleines bisschen Paris nehmen wir immer mit.</div>
-        <span class="tl-tag">Luxemburg</span>
       </div>
     </div>
 
     <div class="divider"></div>
-    <div class="pack-label">Was du heute brauchst</div>
-    <div class="pack-hint">Reisetag — Komfort. Lass ein bisschen Platz im Koffer. Paris hat eine Art, ihn zu füllen.</div>
-    <div class="pack-pills">
-      <span class="pill key">bequemes Reise-Outfit</span>
-      <span class="pill">Sonnenbrille (Daumen gedrückt)</span>
-      <span class="pill">etwas zum Schreiben</span>
-    </div>
+    <div class="day-hint">Reisetag — Komfort. Lass ein bisschen Platz im Koffer. Paris hat eine Art, ihn zu füllen.</div>
 
     <div class="closing">
       <div class="closing-line"></div>
@@ -627,78 +613,250 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--cream);font-fa
   </div>
 </div>
 
+<!-- NAV BAR -->
 <div class="nav-bar" id="nav-bar">
   <div class="nav-dots">
-    <div class="nav-dot active" id="dot-0"></div>
+    <div class="nav-dot" id="dot-0"></div>
     <div class="nav-dot" id="dot-1"></div>
     <div class="nav-dot" id="dot-2"></div>
     <div class="nav-dot" id="dot-3"></div>
   </div>
-  <button class="nav-next" id="nav-next-btn" onclick="nextDay()">Nächster Tag →</button>
+  <button class="nav-next" id="nav-next-btn" onclick="tryNextDay()">Nächster Tag →</button>
 </div>
 
 <script>
-var cur=-1,tot=4;
+// Unlock dates (midnight local time)
+// Day 1 unlocks 29 March, Day 2 = 30 March, Day 3 = 31 March, Day 4 = 1 April
+var UNLOCK = [
+  new Date(2026,2,29), // month is 0-indexed: 2 = March
+  new Date(2026,2,30),
+  new Date(2026,2,31),
+  new Date(2026,3,1)   // 3 = April
+];
+var COVER_UNLOCK = new Date(2026,2,29);
+
+var cur = -1, tot = 4;
+
+function today(){ return new Date(); }
+function dayUnlocked(i){ return today() >= UNLOCK[i]; }
+function coverUnlocked(){ return today() >= COVER_UNLOCK; }
+
+function pad(n){ return n < 10 ? '0'+n : ''+n; }
+function msTo(target){
+  var diff = target - today();
+  if(diff <= 0) return null;
+  var s = Math.floor(diff/1000);
+  var m = Math.floor(s/60); s = s%60;
+  var h = Math.floor(m/60); m = m%60;
+  var d = Math.floor(h/24); h = h%24;
+  return {d:d,h:h,m:m,s:s};
+}
+
+function updateCoverCountdown(){
+  var t = msTo(COVER_UNLOCK);
+  if(!t){ activateCover(); return; }
+  document.getElementById('cd-d').textContent = pad(t.d);
+  document.getElementById('cd-h').textContent = pad(t.h);
+  document.getElementById('cd-m').textContent = pad(t.m);
+  document.getElementById('cd-s').textContent = pad(t.s);
+}
+
+function activateCover(){
+  var cs = document.getElementById('countdown-screen');
+  cs.classList.remove('active'); cs.classList.add('exit');
+  setTimeout(function(){ cs.classList.remove('exit'); }, 600);
+  var cv = document.getElementById('cover');
+  cv.style.transform = 'translateX(30px)';
+  cv.classList.add('active');
+}
+
+function buildLockedScreen(dayIdx){
+  var unlock = UNLOCK[dayIdx];
+  var t = msTo(unlock);
+  if(!t) return null; // already unlocked
+  return {unlock: unlock};
+}
+
+// Show a locked overlay inside the day scroll
+function showLockedOverlay(dayIdx){
+  var el = document.getElementById('day-'+dayIdx);
+  // Hide scroll, show locked body
+  var scroll = el.querySelector('.day-scroll');
+  var hdr = el.querySelector('.day-header');
+  if(!el.querySelector('.locked-body')){
+    var lb = document.createElement('div');
+    lb.className = 'locked-body';
+    lb.innerHTML = '<div class="lock-icon">✦</div>' +
+      '<div class="lock-title">Dieser Tag öffnet sich bald.</div>' +
+      '<div class="lock-cd">' +
+        '<div class="lock-block"><div class="lock-num" id="lk-d-'+dayIdx+'">--</div><div class="lock-unit">Tage</div></div>' +
+        '<div class="lock-sep">·</div>' +
+        '<div class="lock-block"><div class="lock-num" id="lk-h-'+dayIdx+'">--</div><div class="lock-unit">Stunden</div></div>' +
+        '<div class="lock-sep">·</div>' +
+        '<div class="lock-block"><div class="lock-num" id="lk-m-'+dayIdx+'">--</div><div class="lock-unit">Minuten</div></div>' +
+        '<div class="lock-sep">·</div>' +
+        '<div class="lock-block"><div class="lock-num" id="lk-s-'+dayIdx+'">--</div><div class="lock-unit">Sekunden</div></div>' +
+      '</div>' +
+      '<div class="lock-note">Noch ein bisschen Geduld —<br>ich habe mir etwas dabei gedacht.</div>';
+    if(scroll) scroll.style.display = 'none';
+    el.appendChild(lb);
+  }
+  updateLockedCountdown(dayIdx);
+}
+
+function updateLockedCountdown(dayIdx){
+  var t = msTo(UNLOCK[dayIdx]);
+  if(!t){
+    // Just unlocked — reload page
+    var lb = document.getElementById('day-'+dayIdx).querySelector('.locked-body');
+    if(lb){ lb.innerHTML = '<div class="lock-title" style="margin-top:2rem;">Wird geladen…</div>'; }
+    setTimeout(function(){ location.reload(); }, 800);
+    return;
+  }
+  var set = function(id, val){ var e = document.getElementById(id); if(e) e.textContent = pad(val); };
+  set('lk-d-'+dayIdx, t.d);
+  set('lk-h-'+dayIdx, t.h);
+  set('lk-m-'+dayIdx, t.m);
+  set('lk-s-'+dayIdx, t.s);
+}
+
+// ── NAV ──
 function goToDay(i){
-  var p=cur;cur=i;
-  if(p===-1){var c=document.getElementById('cover');c.classList.remove('active');c.classList.add('exit');setTimeout(function(){c.classList.remove('exit');},600);}
-  else{var pe=document.getElementById('day-'+p);pe.classList.remove('active');pe.classList.add('exit');setTimeout(function(){pe.classList.remove('exit');},600);}
-  document.getElementById('day-'+i).classList.add('active');
-  if(i===3)initDay4();
+  var prev = cur; cur = i;
+  if(prev === -1){
+    var cv = document.getElementById('cover');
+    cv.classList.remove('active'); cv.classList.add('exit');
+    setTimeout(function(){ cv.classList.remove('exit'); }, 600);
+  } else {
+    var pe = document.getElementById('day-'+prev);
+    pe.classList.remove('active'); pe.classList.add('exit');
+    setTimeout(function(){ pe.classList.remove('exit'); }, 600);
+  }
+  var ne = document.getElementById('day-'+i);
+  ne.classList.add('active');
+  if(!dayUnlocked(i)) showLockedOverlay(i);
+  if(i === 3 && dayUnlocked(3)) initDay4();
   upNav();
 }
-function prevDay(){if(cur===0){goBack();return;}goToDay(cur-1);}
-function nextDay(){if(cur<tot-1)goToDay(cur+1);}
-function goBack(){
-  var p=document.getElementById('day-'+cur);p.classList.remove('active');p.classList.add('exit');setTimeout(function(){p.classList.remove('exit');},600);
-  var c=document.getElementById('cover');c.classList.remove('exit');c.classList.add('active');
-  document.getElementById('nav-bar').classList.remove('show');cur=-1;
+
+function prevDay(){ if(cur === 0){ goBack(); return; } goToDay(cur-1); }
+
+function tryNextDay(){
+  if(cur < tot-1) goToDay(cur+1);
 }
+
+function goBack(){
+  var p = document.getElementById('day-'+cur);
+  p.classList.remove('active'); p.classList.add('exit');
+  setTimeout(function(){ p.classList.remove('exit'); }, 600);
+  var cv = document.getElementById('cover');
+  cv.classList.remove('exit'); cv.classList.add('active');
+  document.getElementById('nav-bar').classList.remove('show');
+  cur = -1;
+}
+
 function upNav(){
   document.getElementById('nav-bar').classList.add('show');
-  for(var i=0;i<tot;i++)document.getElementById('dot-'+i).classList.toggle('active',i===cur);
-  document.getElementById('nav-next-btn').style.visibility=cur===tot-1?'hidden':'visible';
+  for(var i=0;i<tot;i++){
+    var d = document.getElementById('dot-'+i);
+    d.classList.toggle('active', i===cur);
+    d.classList.toggle('locked', !dayUnlocked(i));
+  }
+  var nb = document.getElementById('nav-next-btn');
+  if(cur === tot-1){ nb.style.visibility = 'hidden'; }
+  else { nb.style.visibility = 'visible'; }
 }
-function showEl(id){var el=document.getElementById(id);if(!el)return;el.style.display='block';setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);}
 
-var bkL={
+function showEl(id){
+  var el = document.getElementById(id); if(!el) return;
+  el.style.display = 'block';
+  setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+}
+
+// ── BREAKFAST ──
+var bkL = {
   a:{clue:'"Eine Bäckerei, die Croissants zu kleinen Kunstwerken macht. Die Vitrinen sehen aus, als hätte jemand die ganze Nacht daran gearbeitet — weil jemand das getan hat."',mood:'modern · präzise · ein Erlebnis für die Augen'},
   b:{clue:'"Dieselbe Straßenecke, dieselben Hände, dieselbe Handwerkskunst — seit mehr Jahren als man zählen möchte. Der Duft allein ist einen Umweg wert."',mood:'klassisch · zeitlos · das echte Paris'}
 };
 function pickBreakfast(ch){
-  try{localStorage.setItem('paris_bk',ch);}catch(e){}
-  applyC('cards-breakfast',ch==='a'?0:1);
-  var fb=document.getElementById('feedback-breakfast');
-  fb.textContent=ch==='a'?'Dann beginnen wir dort — die andere kommt übermorgen dran.':'Die klassische Wahl. Übermorgen die andere. Versprochen.';
+  try{ localStorage.setItem('paris_bk', ch); }catch(e){}
+  applyC('cards-breakfast', ch==='a'?0:1);
+  var fb = document.getElementById('feedback-breakfast');
+  fb.textContent = ch==='a' ? 'Dann beginnen wir dort — die andere kommt übermorgen dran.' : 'Die klassische Wahl. Übermorgen die andere. Versprochen.';
   fb.classList.add('show');
 }
 function initDay4(){
-  var s;try{s=localStorage.getItem('paris_bk');}catch(e){}
-  var o=s==='a'?'b':'a',l=bkL[o];
-  if(!l)return;
-  document.getElementById('d4-breakfast-desc').textContent='Wir haben versprochen, beide zu besuchen — heute ist die andere dran.';
-  document.getElementById('d4-breakfast-card').innerHTML='<div class="c-card auto-chosen" style="pointer-events:none;"><div class="c-num">Adresse '+(o==='a'?'A':'B')+'</div><div class="c-clue">'+l.clue+'</div><div class="c-mood">'+l.mood+'</div><span class="c-badge">heute</span></div>';
+  var s; try{ s = localStorage.getItem('paris_bk'); }catch(e){}
+  var o = (s==='a') ? 'b' : 'a';
+  var l = bkL[o]; if(!l) return;
+  document.getElementById('d4-breakfast-desc').textContent = 'Wir haben versprochen, beide zu besuchen — heute ist die andere dran.';
+  document.getElementById('d4-breakfast-card').innerHTML =
+    '<div class="c-card auto-chosen" style="pointer-events:none;">' +
+    '<div class="c-num">Adresse '+(o==='a'?'A':'B')+'</div>' +
+    '<div class="c-clue">'+l.clue+'</div>' +
+    '<div class="c-mood">'+l.mood+'</div>' +
+    '<span class="c-badge">heute</span></div>';
 }
-var cfb={'lunch-d2':['Ein kleines Bistro. Ich freue mich.','Eine echte Brasserie. Perfekte Wahl.'],'church':['Die wiedergeborene Kathedrale. Ich freue mich sehr.','Tausend Fenster. Sehr gute Wahl.'],'museum':['Straßenkunst zwischen Wänden. Gute Wahl.','Die Impressionisten zu Hause. Wunderschön.']};
-function pickChoice(key,idx){
-  try{localStorage.setItem('paris_'+key,idx);}catch(e){}
-  applyC('cards-'+key,idx);
-  var fb=document.getElementById('feedback-'+key);
-  if(fb){fb.textContent=cfb[key]?cfb[key][idx]:'';fb.classList.add('show');}
+
+// ── GENERIC CHOICES ──
+var cfb = {
+  'lunch-d2':['Ein kleines Bistro. Ich freue mich.','Eine echte Brasserie. Perfekte Wahl.'],
+  'church':['Die wiedergeborene Kathedrale. Ich freue mich sehr.','Tausend Fenster. Sehr gute Wahl.'],
+  'museum':['Straßenkunst zwischen Wänden. Gute Wahl.','Die Impressionisten zu Hause. Wunderschön.']
+};
+function pickChoice(key, idx){
+  try{ localStorage.setItem('paris_'+key, idx); }catch(e){}
+  applyC('cards-'+key, idx);
+  var fb = document.getElementById('feedback-'+key);
+  if(fb){ fb.textContent = cfb[key] ? cfb[key][idx] : ''; fb.classList.add('show'); }
 }
-function applyC(cid,idx){
-  var c=document.getElementById(cid);if(!c)return;
-  c.querySelectorAll('.c-card').forEach(function(el,i){el.classList.remove('chosen','unchosen');el.classList.add(i===idx?'chosen':'unchosen');});
+function applyC(cid, idx){
+  var c = document.getElementById(cid); if(!c) return;
+  c.querySelectorAll('.c-card').forEach(function(el,i){
+    el.classList.remove('chosen','unchosen');
+    el.classList.add(i===idx ? 'chosen' : 'unchosen');
+  });
 }
 function restore(){
-  ['lunch-d2','church','museum'].forEach(function(k){var s;try{s=localStorage.getItem('paris_'+k);}catch(e){}if(s!==null&&s!==undefined)applyC('cards-'+k,parseInt(s));});
-  var bk;try{bk=localStorage.getItem('paris_bk');}catch(e){}
-  if(bk){applyC('cards-breakfast',bk==='a'?0:1);var fb=document.getElementById('feedback-breakfast');if(fb){fb.textContent='Deine Wahl ist gespeichert.';fb.classList.add('show');}}
+  ['lunch-d2','church','museum'].forEach(function(k){
+    var s; try{ s = localStorage.getItem('paris_'+k); }catch(e){}
+    if(s !== null && s !== undefined) applyC('cards-'+k, parseInt(s));
+  });
+  var bk; try{ bk = localStorage.getItem('paris_bk'); }catch(e){}
+  if(bk){
+    applyC('cards-breakfast', bk==='a'?0:1);
+    var fb = document.getElementById('feedback-breakfast');
+    if(fb){ fb.textContent = 'Deine Wahl ist gespeichert.'; fb.classList.add('show'); }
+  }
 }
+
+// ── SWIPE ──
+var tx = 0;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', function(e){
+  if(cur === -1) return;
+  var dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) < 65) return;
+  if(dx < 0) tryNextDay(); else prevDay();
+}, {passive:true});
+
+// ── INIT ──
 restore();
-var tx=0;
-document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){if(cur===-1)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)<65)return;if(dx<0)nextDay();else prevDay();},{passive:true});
+if(!coverUnlocked()){
+  // Show countdown screen
+  updateCoverCountdown();
+  setInterval(function(){
+    updateCoverCountdown();
+    // also update any open locked day
+    if(cur >= 0 && !dayUnlocked(cur)) updateLockedCountdown(cur);
+  }, 1000);
+} else {
+  // Cover is unlocked — hide countdown, show cover
+  var cs = document.getElementById('countdown-screen');
+  cs.classList.remove('active');
+  document.getElementById('cover').classList.add('active');
+  document.getElementById('cover').style.transform = 'none';
+}
 </script>
 </body>
 </html>
